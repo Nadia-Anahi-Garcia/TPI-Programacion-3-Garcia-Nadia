@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Store | Catálogo</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="../../../style.css">
+</head>
+
+<body>
+    <header>
+
+        <div  class="marca">
+            <img src="/assets/icono-food-store.png" alt="Food Store">
+            <h1>Food Store</h1>
+        </div>
+       
+
+        <nav class="menu-principal">
+            
+            <a href="./home.html">
+                <span class="material-symbols-outlined">storefront</span>
+                Catálogo</a>
+            <a href="../cart/cart.html">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                 Carrito</a>
+            <button id="logoutButton">Cerrar sesión</button>
+        </nav>
+        <nav class="nav__toggleMobile">
+            <span class="material-symbols-outlined">menu</span>
+        </nav>
+    </header>
+
+    <main class="catalogoLayout">
+        <aside class="menuCategorias">
+            <h2>Categorías</h2>
+
+            <button id="mostrarTodos" type="button">
+                Todos los productos
+            </button>
+
+            <div id="contenedorCategorias"></div>
+
+        </aside>
+        
+        
+        <section class="contenidoCatalogo">
+            <label for="buscador">Buscar productos</label>
+            <input type="text" id="buscador" placeholder="Buscar productos..." autocomplete="off"/>
+            <p id="mensajeProductos"></p>
+            <div id="contenedorProductos"></div>
+        </section>
+
+    </main>
+       
+    <script type="module" src="./home.ts"></script>
+
+    <footer>&copy; Mi pagina web - FOOD STORE</footer>
+    
+</body>
+
+</html>

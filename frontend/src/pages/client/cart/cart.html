@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Store | Carrito</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="../../../style.css">
+</head>
+<body>
+   
+    <header>
+        
+        <div class="marca">
+            <img src="/assets/icono-food-store.png" alt="Logo de Food Store">
+            <h1>Food Store</h1>
+        </div>
+
+        <nav class="menu-principal">
+            <a href="../home/home.html">
+                <span class="material-symbols-outlined">storefront</span>
+                Catálogo
+            </a>
+           
+            <a href="./cart.html">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                Carrito
+            </a>
+            <button id="logoutButton">Cerrar sesión</button>
+        </nav>
+
+    </header>
+
+    <main class="carritoLayout">
+      <h2>Mi carrito</h2>
+
+       <div class="contenidoCarrito">
+            <section class="itemsCarrito">
+                <p id="mensajeCarrito"></p>
+                <div id="contenedorCarrito"></div>
+            </section>
+            <aside class="resumenCarrito">
+                <h3>Resumen</h3>
+
+                <div>
+                    <span>Subtotal</span>
+                    <span id="subtotalCarrito">$0</span>
+                </div>
+
+                <div>
+                    <strong>Total</strong>
+                    <strong id="totalCarrito">$0</strong>
+                </div>
+                
+                <button type="button" id="finalizarCompra" disabled>
+                Finalizar compra
+                </button>
+                
+                <p id="aviso"> Función no disponible en este momento </p>
+
+                <button type="button" id="vaciarCarrito">
+                Vaciar carrito
+                </button>
+
+            </aside> 
+
+       </div>
+       
+    </main>
+    <footer>&copy; Mi página web - Food Store</footer>
+     <script type="module" src="./cart.ts"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-import type { IUser } from "../types/IUser";
+import type { IUsuario } from "../types/usuario";
 import type { Rol } from "../types/Rol";
 import { getUSer, removeUser } from "./localStorage";
 import { navigate } from "./navigate";
@@ -14,8 +14,8 @@ export const checkAuhtUser = (
     navigate(redireccion1);
     return;
   } else {
-    const parseUser: IUser = JSON.parse(user);
-    if (parseUser.role !== rol) {
+    const parseUser: IUsuario = JSON.parse(user);
+    if (parseUser.rol !== rol) {
       navigate(redireccion2);
       return;
     }

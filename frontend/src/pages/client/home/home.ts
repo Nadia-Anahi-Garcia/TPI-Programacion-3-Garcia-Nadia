@@ -1,7 +1,8 @@
 import "../../../main";
 import { logout } from "../../../utils/auth";
 // Importa el array con las categorias
-import { getCategories, PRODUCTS } from "../../../data/data";
+import { obtenerCategorias, obtenerProductos } from "../../../utils/fetch";
+import type { IProduct } from "../../../types/product";
 // impora para indicar el tipo de una categoria. 
 import type { ICategoria } from "../../../types/categoria";
 import{ agregarProductoAlCarrito } from "../../../utils/cart";
@@ -26,6 +27,9 @@ const mensajeProductos= document.getElementById ("mensajeProductos") as HTMLPara
 // Creás categoriaActiva con let porque cambia al hacer clic. 
 // Puede guardar una ICategoria o null si todavía no hay ninguna seleccionada.
 let categoria_Activa : ICategoria | null= null;
+// Creamos array vacios de categoria y producto. 
+let categorias: ICategoria[] = [];
+let productos : IProduct[] = [];
 
 // Mostrar las categorías
 const dibujarCategorias = () : void =>{
@@ -37,11 +41,7 @@ const dibujarCategorias = () : void =>{
     } else {
       botonMostrarTodos.className = "categoria-btn";
     }
-
     
-    // Guarda el array con todas las categorias disponibles
-    const categorias = getCategories();
-
     // Obtiene las categorías y las recorre con forEach.
     categorias.forEach((categoria) => {
         const button = document.createElement('button');
@@ -75,33 +75,32 @@ const dibujarProductos = () : void => {
 
   const textoBuscado = buscador.value.trim();
 
-  const productos = PRODUCTS.filter ((producto)=> {
-    const coincide_producto = 
+  const productosFiltrados = productos.filter ((producto)=> {
+    const coincide_Categoria = 
     categoria_Activa === null || 
-      producto.categorias.some((categoria)=> categoria.id === categoria_Activa?.id
-    );
+      producto.categoriaId=== categoria_Activa.id;
    
-    const coince_nombre = producto.nombre
+    const coincideNombre = producto.nombre
     .toLocaleLowerCase()
     .includes(buscador.value.toLocaleLowerCase());
 
-    return coincide_producto && coince_nombre
+    return coincide_Categoria && coincideNombre;
   });
 
   /* Si se ingresa un texto se valida que si no está vacio y no hay coincidencias
    le avise. Caso contratio si las las hay arroja cuantas. */
 
   if (textoBuscado !== "") { 
-    if (productos.length === 0){
+    if (productosFiltrados.length === 0){
         mensajeProductos.textContent = `No hay coincidencias para  "${textoBuscado}".`;
     } else{
-        mensajeProductos.textContent = `Búsqueda: "${textoBuscado}" - ${productos.length} resultado(s)`; 
+        mensajeProductos.textContent = `Búsqueda: "${textoBuscado}" - ${productosFiltrados.length} resultado(s)`; 
     }
   } else{
     mensajeProductos.textContent = "";
   };
 
-  productos.forEach((producto)=> {
+  productosFiltrados.forEach((producto)=> {
     const card = document.createElement("div");
     card.className = "card-producto";
     card.innerHTML = ` 
@@ -130,8 +129,18 @@ botonMostrarTodos.addEventListener("click", () =>{
   dibujarProductos();
 })
 
-// Llamo a la función para que los botones aparezcan
-dibujarCategorias();
 
-dibujarProductos();
+async function iniciarPagina(): Promise<void> {
+  try {
+    categorias = await obtenerCategorias();
+    productos = await obtenerProductos();
 
+    dibujarCategorias();
+    dibujarProductos();
+  } catch (error) {
+    console.error(error);
+    mensajeProductos.textContent = "No se pudieron cargar los datos.";
+  }
+}
+
+iniciarPagina();

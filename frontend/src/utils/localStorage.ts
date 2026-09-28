@@ -1,6 +1,6 @@
-import type { IUser } from "../types/IUser";
+import type { IUsuario } from "../types/usuario";
 
-export const saveUser = (user: IUser) => {
+export const saveUser = (user: IUsuario) => {
   const parseUser = JSON.stringify(user);
   localStorage.setItem("userData", parseUser);
 };

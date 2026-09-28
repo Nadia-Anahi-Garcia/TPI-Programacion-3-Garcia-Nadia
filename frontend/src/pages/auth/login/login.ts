@@ -1,11 +1,13 @@
-import type { IUser } from "../../../types/IUser";
+import type { IUsuario } from "../../../types/usuario";
 import { navigate } from "../../../utils/navigate";
-import "../../../style.css";
+import { obtenerUsuarios } from "../../../utils/fetch";
+import { saveUser } from "../../../utils/localStorage";
+
 const form = document.querySelector<HTMLFormElement>("#form");
 
 
 if (form){
-  form.addEventListener("submit", (event : SubmitEvent)=>{
+  form.addEventListener("submit", async (event : SubmitEvent)=>{
     event.preventDefault();  // evita que el navegador recargue la página automáticamente.
 
     const formData = new FormData(form);
@@ -16,26 +18,30 @@ if (form){
       return;
     }
 
-    const savedUsers = localStorage.getItem("users");
-    const users : IUser[] = savedUsers ? JSON.parse(savedUsers) as IUser[] : [];
-    const userFound = users.find((user) => user.email === email && user.password === password);
+    const usuariosBase = await obtenerUsuarios();
+    const saveUsers = localStorage.getItem("users");
+    const usuariosRegistrados : IUsuario[] = saveUsers
+      ? JSON.parse(saveUsers) as IUsuario[] : [];
+    
+    const usuarios = [...usuariosBase, ...usuariosRegistrados];
+
+    const userFound = usuarios.find(
+      (usuario)=>
+        usuario.mail === email && 
+        usuario.password === password &&
+        !usuario.eliminado
+    );
     
     if (!userFound){
      alert("Email o password incorrectas")
      return
     }
     
-    const userData : IUser = {
-      email:userFound.email,
-      password: userFound.password,
-      loggedIn: true,
-      role: userFound.role,
-    };
+    saveUser(userFound);
 
-    localStorage.setItem("userData", JSON.stringify(userData));
     form.reset();
 
-    if (userData.role === "admin") {
+    if (userFound.rol === "ADMIN") {
         navigate("/src/pages/admin/home/home.html")
     }else{
       navigate("/src/pages/client/home/home.html")

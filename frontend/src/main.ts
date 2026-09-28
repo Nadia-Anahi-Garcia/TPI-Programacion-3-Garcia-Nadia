@@ -7,13 +7,13 @@ const protegerRutas = () : void =>{
         checkAuhtUser(
             "/src/pages/auth/login/login.html",
             "/src/pages/client/home/home.html",
-            "admin"
+            "ADMIN"
         );
     } else if (rutaActual.includes("/client/")){
         checkAuhtUser(
             "/src/pages/auth/login/login.html",
             "/src/pages/admin/home/home.html",
-            "client"
+            "USUARIO"
         );
     }
 }

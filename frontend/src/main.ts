@@ -6,13 +6,13 @@ const protegerRutas = () : void =>{
     if(rutaActual.includes("/admin/")){
         checkAuhtUser(
             "/src/pages/auth/login/login.html",
-            "/src/pages/client/home/home.html",
+            "/src/pages/store/home/home.html",
             "ADMIN"
         );
-    } else if (rutaActual.includes("/client/")){
+    } else if (rutaActual.includes("/store/")){
         checkAuhtUser(
             "/src/pages/auth/login/login.html",
-            "/src/pages/admin/home/home.html",
+           "/src/pages/admin/home/home.html",
             "USUARIO"
         );
     }

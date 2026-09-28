@@ -44,7 +44,7 @@ if (form){
     if (userFound.rol === "ADMIN") {
         navigate("/src/pages/admin/home/home.html")
     }else{
-      navigate("/src/pages/client/home/home.html")
+      navigate("/src/pages/store/home/home.html")
     }
 });
   

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Store | Productos</title>
+    <link rel="stylesheet" href="../../../style.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0"
+    />
+</head>
+<body>
+    <main class="admin-layout">
+      <aside class="admin-sidebar">
+        <h1>Food Store</h1>
+
+        <nav>
+          <a href="../home/home.html">
+            <span class="material-symbols-outlined">dashboard</span>
+            Dashboard
+          </a>
+
+          <a href="../categories/categories.html">
+            <span class="material-symbols-outlined">category</span>
+            Categorías
+          </a>
+
+          <a href="./products.html">
+            <span class="material-symbols-outlined">inventory_2</span>
+            Productos
+          </a>
+
+          <a href="../orders/orders.html">
+            <span class="material-symbols-outlined">receipt_long</span>
+            Pedidos
+          </a>
+
+          <a href="../../store/home/home.html">
+            <span class="material-symbols-outlined">storefront</span>
+            Ver tienda
+          </a>
+        </nav>
+
+        <button id="logoutButton">
+          <span class="material-symbols-outlined">logout</span>
+          Cerrar sesión
+        </button>
+      </aside>
+
+      <section class="admin-content">
+        <h2>Gestión de productos</h2>
+
+        <button id="botonNuevoProducto">
+          <span class="material-symbols-outlined">add</span>
+          Nuevo producto
+        </button>
+
+        <p id="mensajeProductos"></p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Precio</th>
+              <th>Categoría</th>
+              <th>Stock</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody id="cuerpoTablaProductos"></tbody>
+        </table>
+
+        <section id="contenedorFormularioProducto" hidden>
+          <h3 id="tituloFormularioProducto">Nuevo producto</h3>
+
+          <form id="formularioProducto">
+            <input type="hidden" id="idProducto" />
+
+            <label for="nombreProducto">Nombre</label>
+            <input type="text" id="nombreProducto" required />
+
+            <label for="descripcionProducto">Descripción</label>
+            <textarea id="descripcionProducto" required></textarea>
+
+            <label for="precioProducto">Precio</label>
+            <input
+              type="number"
+              id="precioProducto"
+              min="0.01"
+              step="0.01"
+              required
+            />
+
+            <label for="stockProducto">Stock</label>
+            <input
+              type="number"
+              id="stockProducto"
+              min="0"
+              step="1"
+              required
+            />
+
+            <label for="categoriaProducto">Categoría</label>
+            <select id="categoriaProducto" required>
+              <option value="">Seleccioná una categoría</option>
+            </select>
+
+            <label for="imagenProducto">URL de la imagen</label>
+            <input
+              type="url"
+              id="imagenProducto"
+              placeholder="Pegá aquí la URL directa de la imagen"
+              required
+            />
+
+            <label for="disponibleProducto">
+              <input type="checkbox" id="disponibleProducto" checked />
+              Disponible
+            </label>
+
+            <button type="submit">
+              <span class="material-symbols-outlined">save</span>
+              Guardar
+            </button>
+
+            <button type="button" id="botonCancelarProducto">
+              <span class="material-symbols-outlined">close</span>
+              Cancelar
+            </button>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <footer>&copy; Mi página web - FOOD STORE</footer>
+
+    <script type="module" src="./products.ts"></script>
+  </body>
+</html>

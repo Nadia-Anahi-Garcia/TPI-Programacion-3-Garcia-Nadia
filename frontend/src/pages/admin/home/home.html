@@ -9,12 +9,62 @@
 
 <body>
 
-    <main class="panel">
-        <h1>Food Store</h1>
-        <h2> Área de Administración</h2>
-        <p>Accediste correctamente como administrador</p>
-        <button id="logoutButton">Cerrar sesión</button>
+    <main class="admin-layout">
+        <aside class="admin-sidebar">
+            <h1>Food Store</h1>
+
+            <nav>
+                <a href="./home.html">Dashboard</a>
+                <a href="../categories/categories.html">Categorías</a>
+                <a href="../products/products.html">Productos</a>
+                <a href="../orders/orders.html">Pedidos</a>
+                <a href="../../store/home/home.html">Ver tienda</a>
+            </nav>
+
+            <button id="logoutButton">Cerrar sesión</button>
+        </aside>
+
+        <section class="admin-content">
+            <h2>Dashboard</h2>
+            <p>Resumen general de Food Store</p>
+
+            <p id="mensajeDashboard"></p>
+
+            <section class="dashboard-cards">
+                <article class="dashboard-card">
+                    <h3>Total de categorías</h3>
+                    <p id="totalCategorias">0</p>
+                </article>
+
+                <article class="dashboard-card">
+                    <h3>Total de productos</h3>
+                    <p id="totalProductos">0</p>
+                </article>
+
+                <article class="dashboard-card">
+                    <h3>Total de pedidos</h3>
+                    <p id="totalPedidos">0</p>
+                </article>
+
+                <article class="dashboard-card">
+                    <h3>Productos disponibles</h3>
+                    <p id="productosDisponibles">0</p>
+                </article>
+            </section>
+
+            <section class="dashboard-resumen">
+                <h3>Resumen de productos</h3>
+                <p>Disponibles: <span id="productosActivos">0</span></p>
+                <p>No disponibles: <span id="productosInactivos">0</span></p>
+            </section>
+
+            <section class="dashboard-resumen">
+                <h3>Pedidos por estado</h3>
+                <ul id="pedidosPorEstado"></ul>
+            </section>
+        </section>
     </main>
+
     <footer>&copy; Mi pagina web - FOOD STORE</footer>
     
     <script type="module" src="./home.ts"></script>

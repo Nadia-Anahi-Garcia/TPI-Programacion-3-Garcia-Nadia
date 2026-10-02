@@ -22,20 +22,24 @@ const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElemen
 const nombreUsuario = document.getElementById("nombreUsuario") as HTMLSpanElement;
 const enlacePanelAdmin = document.getElementById("enlacePanelAdmin") as HTMLAnchorElement;
 const enlaceMisPedidos = document.getElementById("enlaceMisPedidos") as HTMLAnchorElement;
-
+const enlaceCarrito = document.getElementById("enlaceCarrito") as HTMLAnchorElement;
 
 buttonLogout?.addEventListener("click", () => {
   logout();
 });
 
 const usuarioGuardado = getUSer();
+let esAdmin = false;
 
 if (usuarioGuardado) {
   const usuario: IUsuario = JSON.parse(usuarioGuardado);
   nombreUsuario.textContent = `${usuario.nombre} ${usuario.apellido}`;
   if (usuario.rol === "ADMIN") {
+    esAdmin = true;
     enlacePanelAdmin.hidden = false;
     enlaceMisPedidos.hidden = true;
+    enlaceCarrito.hidden = true;
+    
   }
 }
 
@@ -165,6 +169,10 @@ const dibujarProductos = () : void => {
       );
     });
     const botonAgregar = card.querySelector(".btn-agregar") as HTMLButtonElement;
+    if (esAdmin) {
+      botonAgregar.hidden = true;
+    }
+    
     botonAgregar.addEventListener("click", () => {
       const seAgrego = agregarProductoAlCarrito(producto);
 

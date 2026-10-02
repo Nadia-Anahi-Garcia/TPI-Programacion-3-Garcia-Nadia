@@ -1,7 +1,7 @@
 import { checkAuhtUser } from "./utils/auth";
 import { getUSer } from "./utils/localStorage";
 import { navigate } from "./utils/navigate";
-import "./style.css";
+
 
 
 const protegerRutas = (): void => {
@@ -19,6 +19,12 @@ const protegerRutas = (): void => {
       "/src/pages/admin/home/home.html",
       "USUARIO"
     );
+  } else if (rutaActual.includes("/store/cart/")) {
+  checkAuhtUser(
+    "/src/pages/auth/login/login.html",
+    "/src/pages/admin/home/home.html",
+    "USUARIO"
+  ); 
   } else if (rutaActual.includes("/store/")) {
     const usuarioGuardado = getUSer();
 

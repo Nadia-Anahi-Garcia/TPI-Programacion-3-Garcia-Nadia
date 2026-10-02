@@ -22,6 +22,10 @@
     box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body{
     background-color: var(--color--fondo);
     font-family: Arial, Helvetica, sans-serif;
@@ -503,6 +507,208 @@ footer{
 
 .panel button {
     width: 100%;
+}
+
+/* ===== ADMINISTRACIÓN ===== */
+
+.admin-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: calc(100vh - 48px);
+}
+
+.admin-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+    background-color: var(--color--primario);
+    color: var(--color--blanco);
+}
+
+.admin-sidebar h1 {
+    color: var(--color--blanco);
+    text-align: center;
+    font-size: 1.7rem;
+}
+
+.admin-sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.admin-sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem;
+    border-radius: 6px;
+    color: var(--color--blanco);
+    text-decoration: none;
+}
+
+.admin-sidebar nav a:hover {
+    background-color: var(--color-primario-hover);
+}
+
+.admin-sidebar > button {
+    margin-top: auto;
+    border: 1px solid var(--color--blanco);
+    background-color: transparent;
+}
+
+.admin-sidebar > button:hover {
+    background-color: var(--color-primario-hover);
+}
+
+.admin-content {
+    padding: 2rem;
+    overflow-x: auto;
+}
+
+.admin-content > h2 {
+    color: var(--color--primario);
+    font-size: 2rem;
+}
+
+.admin-content > h2 + p {
+    margin: 0.4rem 0 1.5rem;
+    color: #666;
+}
+
+/* Dashboard */
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-card,
+.dashboard-resumen {
+    padding: 1rem;
+    border-radius: var(--borderRadius);
+    background-color: var(--color--blanco);
+    box-shadow: var(--sombra);
+}
+
+.dashboard-card h3,
+.dashboard-resumen h3 {
+    margin-bottom: 0.7rem;
+    color: var(--color--primario);
+    font-size: 1rem;
+}
+
+.dashboard-card p {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.dashboard-resumen {
+    margin-bottom: 1rem;
+}
+
+.dashboard-resumen li {
+    margin: 0.35rem 0;
+    list-style-position: inside;
+}
+
+/* Tablas, formularios y pedidos */
+
+.admin-content table {
+    width: 100%;
+    min-width: 720px;
+    margin-top: 1rem;
+    border-collapse: collapse;
+    background-color: var(--color--blanco);
+    box-shadow: var(--sombra);
+}
+
+.admin-content th,
+.admin-content td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--color--borde);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.admin-content th {
+    background-color: #ffe4dc;
+}
+
+.admin-content tr:hover td {
+    background-color: #fafafa;
+}
+
+.admin-content td img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.botonEditarCategoria,
+.botonEditarProducto,
+.botonVerDetallePedido {
+    margin: 0.15rem;
+}
+
+.botonEliminarCategoria,
+.botonEliminarProducto {
+    margin: 0.15rem;
+    background-color: var(--color-peligro);
+}
+
+.botonEliminarCategoria:hover,
+.botonEliminarProducto:hover {
+    background-color: #842d2d;
+}
+
+#contenedorFormularioCategoria,
+#contenedorFormularioProducto,
+#modalDetallePedido {
+    max-width: 700px;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border-radius: var(--borderRadius);
+    background-color: var(--color--blanco);
+    box-shadow: var(--sombra);
+}
+
+#contenedorFormularioCategoria h3,
+#contenedorFormularioProducto h3,
+#detallePedidoAdmin h3 {
+    margin-bottom: 1rem;
+    color: var(--color--primario);
+}
+
+#formularioCategoria,
+#formularioProducto {
+    display: grid;
+}
+
+#formularioCategoria button,
+#formularioProducto button {
+    margin-top: 0.35rem;
+}
+
+#filtroCliente {
+    width: min(100%, 330px);
+}
+
+.selectEstadoPedido {
+    min-width: 125px;
+    margin: 0;
+}
+
+#botonCerrarDetallePedido {
+    float: right;
+}
+
+#detallePedidoAdmin p,
+#detallePedidoAdmin li {
+    margin-bottom: 0.5rem;
 }
 
 /*Media Queries*/

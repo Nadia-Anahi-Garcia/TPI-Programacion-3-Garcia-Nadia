@@ -10,10 +10,14 @@ import { navigate } from "../../../utils/navigate";
 // Obtenemos los elementos del DOM
 
 const detalleProducto = document.getElementById("detalleProducto") as HTMLElement;
-
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
-
 const nombreUsuario = document.getElementById("nombreUsuario") as HTMLSpanElement;
+const enlaceMisPedidos = document.getElementById("enlaceMisPedidos") as HTMLAnchorElement;
+const enlaceCarrito = document.getElementById("enlaceCarrito") as HTMLAnchorElement;
+
+
+let esAdmin = false;
+
 
 // Recuperar el id que se guarda en home.ts
 const productoSeleccionado = localStorage.getItem("productoSeleccionado");
@@ -44,8 +48,8 @@ const dibujarDetalleProducto = (producto:IProduct): void =>{
       <p>Precio: $${producto.precio}</p>
       <p>Stock disponible: ${producto.stock}</p>
       <p>Estado: ${estado}</p>
-      <label for="cantidadProducto">Cantidad:</label>
-      <div class="controles-cantidad">
+      <label id="labelCantidad" for="cantidadProducto">Cantidad:</label>
+      <div id="controlesCantidad" class="controles-cantidad">   
         <button type="button" id="btnRestarCantidad">−</button>
         <span id="cantidadProducto">1</span>
         <button type="button" id="btnSumarCantidad">+</button>
@@ -89,7 +93,15 @@ const dibujarDetalleProducto = (producto:IProduct): void =>{
   });
 
   const botonAgregar = document.getElementById("btnAgregarCarrito") as HTMLButtonElement;
-  
+  const controlesCantidad = document.getElementById("controlesCantidad") as HTMLDivElement;
+  const labelCantidad = document.getElementById("labelCantidad") as HTMLLabelElement;
+
+  if (esAdmin) {
+    botonAgregar.hidden = true;
+    controlesCantidad.hidden = true;
+    labelCantidad.hidden = true;
+  }
+
   if (!producto.disponible || stockRestante === 0) {
     botonAgregar.disabled = true;
   }
@@ -146,4 +158,10 @@ const usuarioGuardado = getUSer();
 if (usuarioGuardado) {
   const usuario: IUsuario = JSON.parse(usuarioGuardado);
   nombreUsuario.textContent = `${usuario.nombre} ${usuario.apellido}`;
+
+  if (usuario.rol === "ADMIN") {
+    esAdmin = true;
+    enlaceMisPedidos.hidden = true;
+    enlaceCarrito.hidden = true;
+  }
 }

@@ -10,9 +10,19 @@ import type { ICategoria } from "../../../types/categoria";
 import{ agregarProductoAlCarrito, obtenerCarrito } from "../../../utils/cart";
 
 
-
+// Obtiene los elementos necesarios del DOM
+const contenedorCategorias = document.getElementById("contenedorCategorias")!;
+const contenedorProductos = document.getElementById("contenedorProductos" )!;
+const buscador = document.getElementById("buscador" )as HTMLInputElement;
+const ordenProductos = document.getElementById("ordenProductos") as HTMLSelectElement;
+const botonMostrarTodos = document.getElementById("mostrarTodos") as HTMLButtonElement;
+const mensajeProductos= document.getElementById ("mensajeProductos") as HTMLParagraphElement;
+const contadorCarrito = document.getElementById("contadorCarrito") as HTMLSpanElement;
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
 const nombreUsuario = document.getElementById("nombreUsuario") as HTMLSpanElement;
+const enlacePanelAdmin = document.getElementById("enlacePanelAdmin") as HTMLAnchorElement;
+const enlaceMisPedidos = document.getElementById("enlaceMisPedidos") as HTMLAnchorElement;
+
 
 buttonLogout?.addEventListener("click", () => {
   logout();
@@ -23,16 +33,13 @@ const usuarioGuardado = getUSer();
 if (usuarioGuardado) {
   const usuario: IUsuario = JSON.parse(usuarioGuardado);
   nombreUsuario.textContent = `${usuario.nombre} ${usuario.apellido}`;
+  if (usuario.rol === "ADMIN") {
+    enlacePanelAdmin.hidden = false;
+    enlaceMisPedidos.hidden = true;
+  }
 }
 
-// Obtiene los elementos necesarios del DOM
-const contenedorCategorias = document.getElementById("contenedorCategorias")!;
-const contenedorProductos = document.getElementById("contenedorProductos" )!;
-const buscador = document.getElementById("buscador" )as HTMLInputElement;
-const ordenProductos = document.getElementById("ordenProductos") as HTMLSelectElement;
-const botonMostrarTodos = document.getElementById("mostrarTodos") as HTMLButtonElement;
-const mensajeProductos= document.getElementById ("mensajeProductos") as HTMLParagraphElement;
-const contadorCarrito = document.getElementById("contadorCarrito") as HTMLSpanElement;
+
 
 // Guarda la categoría seleccionada para aplicar el filtro
 // Creás categoriaActiva con let porque cambia al hacer clic. 

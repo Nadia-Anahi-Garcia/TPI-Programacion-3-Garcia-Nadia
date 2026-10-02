@@ -1,7 +1,6 @@
 import "../../../main";
 import { logout } from "../../../utils/auth";
-import { obtenerCategorias,obtenerPedidos,obtenerProductos,obtenerUsuarios,
-} from "../../../utils/fetch";
+import { obtenerCategorias,obtenerPedidos,obtenerProductos,obtenerUsuarios,} from "../../../utils/fetch";
 
 // OBTENEMOS LOS ELEMENTOS DEL DOM QUE VAMOS A UTILIZAR
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;

@@ -25,21 +25,34 @@ export const guardarCarrito = (itemsCarrito :ICartItem[]) : void => {
 
 // Función para agregar un producto al carrito
 
-export const agregarProductoAlCarrito = ( producto : IProduct) : void =>{
+export const agregarProductoAlCarrito = ( producto : IProduct, cantidadSeleccionada : number = 1) : boolean =>{
     const carrito = obtenerCarrito();
     const productoEncontrado = carrito.find((item) => {
         return item.producto.id === producto.id
     });
+     const cantidadActual = productoEncontrado
+        ? productoEncontrado.cantidad
+        : 0;
 
+    const superaStock = cantidadActual + cantidadSeleccionada > producto.stock;
+    if (!producto.disponible ||
+        producto.stock === 0 ||
+        cantidadSeleccionada <= 0 || superaStock
+     ) {
+        return false;
+    }
+    
     if (productoEncontrado){
-        productoEncontrado.cantidad ++;
+        productoEncontrado.cantidad += cantidadSeleccionada;
     }else{
         carrito.push({
             producto : producto,
-            cantidad: 1
+            cantidad: cantidadSeleccionada
         });
     }
     guardarCarrito(carrito);
+    return true
+
 }
 
 // Función para calcular el total
@@ -54,21 +67,30 @@ export const calcularTotalCarrito = () : number =>{
 
 // Función para actualizar la cantidad. 
 
-export const actualizarCantidad = (idProducto : number, nuevaCantidad: number) : void => {
+export const actualizarCantidad = (idProducto : number, nuevaCantidad: number) : boolean => {
     
     if(nuevaCantidad <= 0){
         eliminarProductoCarrito(idProducto);
-        return;
+        return true;
     }
     const carrito = obtenerCarrito();
     const itemEncontrado = carrito.find((item) => {
         return item.producto.id === idProducto
     });
-    if(itemEncontrado){
-        itemEncontrado.cantidad = nuevaCantidad;
-        guardarCarrito(carrito);
+
+    if (!itemEncontrado) {
+        return false;
     }
-}
+
+    if (nuevaCantidad > itemEncontrado.producto.stock) {
+        return false;
+    }
+
+    itemEncontrado.cantidad = nuevaCantidad;
+    guardarCarrito(carrito);
+    return true;
+
+};
     
 
 // Función para eliminar un producto del carrito

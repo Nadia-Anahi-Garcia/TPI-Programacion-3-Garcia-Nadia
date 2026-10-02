@@ -1,5 +1,7 @@
 import "../../../main";
 import { logout } from "../../../utils/auth";
+import {getUSer} from "../../../utils/localStorage";
+import type { IUsuario } from "../../../types/usuario";
 // Importa el array con las categorias
 import { obtenerCategorias, obtenerProductos } from "../../../utils/fetch";
 import type { IProduct } from "../../../types/product";
@@ -8,12 +10,19 @@ import type { ICategoria } from "../../../types/categoria";
 import{ agregarProductoAlCarrito } from "../../../utils/cart";
 
 
-const buttonLogout = document.getElementById(
-  "logoutButton"
-) as HTMLButtonElement;
+const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
+const nombreUsuario = document.getElementById("nombreUsuario") as HTMLSpanElement;
+
 buttonLogout?.addEventListener("click", () => {
   logout();
 });
+
+const usuarioGuardado = getUSer();
+
+if (usuarioGuardado) {
+  const usuario: IUsuario = JSON.parse(usuarioGuardado);
+  nombreUsuario.textContent = `${usuario.nombre} ${usuario.apellido}`;
+}
 
 // Obtiene los elementos necesarios del DOM
 const contenedorCategorias = document.getElementById("contenedorCategorias")!;
@@ -108,13 +117,30 @@ const dibujarProductos = () : void => {
         <h3>${producto.nombre}</h3>
         <p>${producto.descripcion}</p>
         <p>$${producto.precio} </p>
+        <a href="../productDetail/productDetail.html" class="btn-detalle">
+          Ver detalle
+        </a>
         <button type="button" class="btn-agregar">Agregar</button>
         `;
+    const enlaceDetalle = card.querySelector(".btn-detalle") as HTMLAnchorElement;
+    enlaceDetalle.addEventListener("click", () => {
+        localStorage.setItem("productoSeleccionado", JSON.stringify(producto.id)
+      );
+    });
     const botonAgregar = card.querySelector(".btn-agregar") as HTMLButtonElement;
-    botonAgregar.addEventListener("click", () =>{
-      agregarProductoAlCarrito(producto);
+    botonAgregar.addEventListener("click", () => {
+      const seAgrego = agregarProductoAlCarrito(producto);
+
+      if (!seAgrego) {
+        alert(
+          `No podés agregar más unidades de ${producto.nombre} porque supera el stock disponible.`
+        );
+      return;
+      }
+
       alert(`${producto.nombre} se agregó exitosamente al carrito.`);
     });
+    
     contenedorProductos.appendChild(card);  
   });
 };

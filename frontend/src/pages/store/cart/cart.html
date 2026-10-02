@@ -13,21 +13,30 @@
    
     <header>
         
-        <div class="marca">
-            <img src="/assets/icono-food-store.png" alt="Logo de Food Store">
+        <div  class="marca">
+            <img src="/assets/icono-food-store.png" alt="Food Store">
             <h1>Food Store</h1>
         </div>
+       
 
         <nav class="menu-principal">
             <a href="../home/home.html">
-                <span class="material-symbols-outlined">storefront</span>
-                Catálogo
+                <span class="material-symbols-outlined">home</span>
+                Inicio
             </a>
-           
-            <a href="./cart.html">
+
+            <a href="../../client/orders/orders.html">
+                <span class="material-symbols-outlined">receipt_long</span>
+                Mis pedidos
+            </a>
+
+            <a href="../cart/cart.html">
                 <span class="material-symbols-outlined">shopping_cart</span>
                 Carrito
             </a>
+
+            <span id="nombreUsuario"></span>
+
             <button id="logoutButton">Cerrar sesión</button>
         </nav>
 
@@ -48,28 +57,57 @@
                     <span>Subtotal</span>
                     <span id="subtotalCarrito">$0</span>
                 </div>
+                
+                <div>
+                    <span>Envío</span>
+                    <span id="envioCarrito">$0</span>
+                </div>
+
 
                 <div>
                     <strong>Total</strong>
                     <strong id="totalCarrito">$0</strong>
                 </div>
                 
-                <button type="button" id="finalizarCompra" disabled>
+                <button type="button" id="finalizarCompra" >
                 Finalizar compra
                 </button>
                 
-                <p id="aviso"> Función no disponible en este momento </p>
+                <p id="aviso"></p>
 
                 <button type="button" id="vaciarCarrito">
-                Vaciar carrito
+                    Vaciar carrito
                 </button>
-
             </aside> 
-
        </div>
-       
+
+       <section id="seccionCheckout" class="checkout" hidden>
+            <h3>Finalizar compra</h3>
+
+            <form id="formCheckout">
+                <div>
+                    <label for="telefonoCheckout">Teléfono de contacto</label>
+                    <input type="tel" id="telefonoCheckout" name="telefono" required />
+                </div>
+
+                <div>
+                    <label for="formaPago">Forma de pago</label>
+                    <select id="formaPago" name="formaPago" required>
+                        <option value="">Seleccioná una opción</option>
+                        <option value="EFECTIVO">Efectivo</option>
+                        <option value="TARJETA">Tarjeta</option>
+                        <option value="TRANSFERENCIA">Transferencia</option>
+                    </select>
+                </div>
+
+                <button type="submit">Confirmar pedido</button>
+                <button type="button" id="cancelarCheckout">Cancelar</button>
+            </form>
+        </section>
+  
     </main>
+
     <footer>&copy; Mi página web - Food Store</footer>
-     <script type="module" src="./cart.ts"></script>
+    <script type="module" src="./cart.ts"></script>
 </body>
 </html>

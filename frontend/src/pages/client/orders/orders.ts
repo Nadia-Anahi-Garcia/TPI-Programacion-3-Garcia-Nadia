@@ -6,7 +6,7 @@ import type { IPedido } from "../../../types/pedido";
 import { obtenerPedidos, obtenerProductos } from "../../../utils/fetch";
 import type { IProduct } from "../../../types/product";
 import { obtenerPedidosLocales } from "../../../utils/pedidos";
-
+import { obtenerCarrito } from "../../../utils/cart";
 
 // OBTENEMOS LOS ELEMENTOS DEL DOM
 const contenedorPedidos = document.getElementById("contenedorPedidos") as HTMLElement;
@@ -16,7 +16,15 @@ const botonLogout = document.getElementById("logoutButton") as HTMLButtonElement
 const modalPedido = document.getElementById("modalPedido") as HTMLElement;
 const detallePedido = document.getElementById("detallePedido") as HTMLElement;
 const botonCerrarModal = document.getElementById("cerrarModalPedido") as HTMLButtonElement;
+const contadorCarrito = document.getElementById("contadorCarrito") as HTMLSpanElement;
 
+
+const cantidadTotalCarrito = obtenerCarrito().reduce(
+  (acumulador, item) => acumulador + item.cantidad,
+  0
+);
+
+contadorCarrito.textContent = `(${cantidadTotalCarrito})`;
 
 botonLogout.addEventListener("click", () =>{
     logout();

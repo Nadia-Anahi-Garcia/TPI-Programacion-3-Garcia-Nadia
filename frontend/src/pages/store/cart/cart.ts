@@ -18,6 +18,7 @@ const COSTO_ENVIO= 0;
 const formCheckout = document.getElementById("formCheckout") as HTMLFormElement;
 const contenedorCarrito = document.getElementById("contenedorCarrito")!;
 const mensajeCarrito = document.getElementById("mensajeCarrito")!;
+const volverAComprar = document.getElementById("volverAComprar") as HTMLAnchorElement;
 const subtotalCarrito = document.getElementById("subtotalCarrito")!;
 const envioCarrito = document.getElementById("envioCarrito")!;
 const totalCarrito = document.getElementById("totalCarrito")!;
@@ -63,11 +64,13 @@ const dibujarCarrito = () :void => {
         totalCarrito.textContent = "$0";
         botonFinalizarCompra.disabled = true;
         aviso.textContent = "Tu carrito está vacío.";
+        volverAComprar.hidden = false;
         return;
     };
     
     // vacio el mensaje 
     mensajeCarrito.textContent = "";
+    volverAComprar.hidden = true;
     botonFinalizarCompra.disabled = false;
     aviso.textContent = "";
 

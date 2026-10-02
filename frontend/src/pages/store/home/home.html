@@ -33,7 +33,7 @@
 
             <a href="../cart/cart.html">
                 <span class="material-symbols-outlined">shopping_cart</span>
-                Carrito
+                Carrito <span id="contadorCarrito">(0)</span>
             </a>
 
             <span id="nombreUsuario"></span>
@@ -58,6 +58,13 @@
         <section class="contenidoCatalogo">
             <label for="buscador">Buscar productos</label>
             <input type="text" id="buscador" placeholder="Buscar productos..." autocomplete="off"/>
+            <label for="ordenProductos">Ordenar productos</label>
+            <select id="ordenProductos">
+                <option value="predeterminado">Orden predeterminado</option>
+                <option value="nombre-asc">Nombre: A a Z</option>
+                <option value="precio-asc">Precio: menor a mayor</option>
+                <option value="precio-desc">Precio: mayor a menor</option>
+            </select>
             <p id="mensajeProductos"></p>
             <div id="contenedorProductos"></div>
         </section>

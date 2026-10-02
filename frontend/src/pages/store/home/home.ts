@@ -7,7 +7,8 @@ import { obtenerCategorias, obtenerProductos } from "../../../utils/fetch";
 import type { IProduct } from "../../../types/product";
 // impora para indicar el tipo de una categoria. 
 import type { ICategoria } from "../../../types/categoria";
-import{ agregarProductoAlCarrito } from "../../../utils/cart";
+import{ agregarProductoAlCarrito, obtenerCarrito } from "../../../utils/cart";
+
 
 
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
@@ -28,9 +29,10 @@ if (usuarioGuardado) {
 const contenedorCategorias = document.getElementById("contenedorCategorias")!;
 const contenedorProductos = document.getElementById("contenedorProductos" )!;
 const buscador = document.getElementById("buscador" )as HTMLInputElement;
+const ordenProductos = document.getElementById("ordenProductos") as HTMLSelectElement;
 const botonMostrarTodos = document.getElementById("mostrarTodos") as HTMLButtonElement;
 const mensajeProductos= document.getElementById ("mensajeProductos") as HTMLParagraphElement;
-
+const contadorCarrito = document.getElementById("contadorCarrito") as HTMLSpanElement;
 
 // Guarda la categoría seleccionada para aplicar el filtro
 // Creás categoriaActiva con let porque cambia al hacer clic. 
@@ -40,13 +42,23 @@ let categoria_Activa : ICategoria | null= null;
 let categorias: ICategoria[] = [];
 let productos : IProduct[] = [];
 
+const actualizarContadorCarrito = (): void => {
+  const cantidadTotal = obtenerCarrito().reduce(
+    (acumulador, item) => acumulador + item.cantidad,
+    0
+  );
+
+  contadorCarrito.textContent = `(${cantidadTotal})`;
+};
+
+
 // Mostrar las categorías
 const dibujarCategorias = () : void =>{
   // Limpiar el contenedor 
     contenedorCategorias.innerHTML = "";
 
     if (categoria_Activa === null) {
-       botonMostrarTodos.className = "btn-activo";
+      botonMostrarTodos.className = "btn-activo";
     } else {
       botonMostrarTodos.className = "categoria-btn";
     }
@@ -85,19 +97,37 @@ const dibujarProductos = () : void => {
   const textoBuscado = buscador.value.trim();
 
   const productosFiltrados = productos.filter ((producto)=> {
-    const coincide_Categoria = 
-    categoria_Activa === null || 
-      producto.categoriaId=== categoria_Activa.id;
+    
+    const estaActivo = producto.disponible === true && producto.eliminado === false;
+    const coincide_Categoria = categoria_Activa === null || producto.categoriaId=== categoria_Activa.id;
    
     const coincideNombre = producto.nombre
     .toLocaleLowerCase()
     .includes(buscador.value.toLocaleLowerCase());
 
-    return coincide_Categoria && coincideNombre;
+    return estaActivo && coincide_Categoria && coincideNombre;
   });
 
   /* Si se ingresa un texto se valida que si no está vacio y no hay coincidencias
    le avise. Caso contratio si las las hay arroja cuantas. */
+
+  if (ordenProductos.value === "nombre-asc") {
+      productosFiltrados.sort((productoA, productoB) =>
+          productoA.nombre.localeCompare(productoB.nombre)
+      );
+  }
+
+  if (ordenProductos.value === "precio-asc") {
+      productosFiltrados.sort(
+        (productoA, productoB) => productoA.precio - productoB.precio
+      );
+    }
+
+  if (ordenProductos.value === "precio-desc") {
+      productosFiltrados.sort(
+        (productoA, productoB) => productoB.precio - productoA.precio
+    );
+  }
 
   if (textoBuscado !== "") { 
     if (productosFiltrados.length === 0){
@@ -137,7 +167,7 @@ const dibujarProductos = () : void => {
         );
       return;
       }
-
+      actualizarContadorCarrito();
       alert(`${producto.nombre} se agregó exitosamente al carrito.`);
     });
     
@@ -146,6 +176,10 @@ const dibujarProductos = () : void => {
 };
 
 buscador.addEventListener("input",()=>{
+  dibujarProductos();
+});
+
+ordenProductos.addEventListener("change", () => {
   dibujarProductos();
 });
 
@@ -168,5 +202,5 @@ async function iniciarPagina(): Promise<void> {
     mensajeProductos.textContent = "No se pudieron cargar los datos.";
   }
 }
-
+actualizarContadorCarrito();
 iniciarPagina();

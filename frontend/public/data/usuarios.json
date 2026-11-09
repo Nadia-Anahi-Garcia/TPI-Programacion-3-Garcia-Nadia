@@ -16,5 +16,25 @@
     "celular": "1198765432",
     "rol": "USUARIO",
     "password": "cliente123"
+  },
+  {
+    "id": 3,
+    "nombre": "Ana",
+    "apellido": "López",
+    "mail": "ana@food.com",
+    "celular": "1100000001",
+    "password": "cliente123",
+    "rol": "USUARIO",
+    "eliminado": false
+  },
+  {
+    "id": 4,
+    "nombre": "Lucía",
+    "apellido": "Martínez",
+    "mail": "lucia@food.com",
+    "celular": "1100000002",
+    "password": "cliente123",
+    "rol": "USUARIO",
+    "eliminado": false
   }
 ]

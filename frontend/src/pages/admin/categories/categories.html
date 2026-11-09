@@ -13,7 +13,7 @@
 
 </head>
 <body>
-    <body>
+
     <main class="admin-layout">
       <aside class="admin-sidebar">
         <h1>Food Store</h1>
@@ -75,7 +75,8 @@
           <tbody id="cuerpoTablaCategorias"></tbody>
         </table>
 
-        <section id="contenedorFormularioCategoria" hidden>
+        <section id="contenedorFormularioCategoria" class="modal" hidden>
+          <div class="modal-contenido">
           <h3 id="tituloFormularioCategoria">Nueva categoría</h3>
 
           <form id="formularioCategoria">
@@ -88,7 +89,7 @@
             <textarea id="descripcionCategoria" required></textarea>
 
             <label for="imagenCategoria">URL de la imagen</label>
-            <input type="text" id="imagenCategoria"placeholder="Pegá aquí la URL directa de la imagen" required />
+            <input type="text" id="imagenCategoria" placeholder="Pegá aquí la URL directa de la imagen" required />
 
             <button type="submit">
               <span class="material-symbols-outlined">save</span>
@@ -99,7 +100,9 @@
               <span class="material-symbols-outlined">close</span>
               Cancelar
             </button>
+
           </form>
+          </div>
         </section>
       </section>
     </main>

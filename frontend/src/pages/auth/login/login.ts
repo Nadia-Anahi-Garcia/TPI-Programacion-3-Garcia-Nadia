@@ -1,4 +1,3 @@
-import type { IUsuario } from "../../../types/usuario";
 import { navigate } from "../../../utils/navigate";
 import { obtenerUsuarios } from "../../../utils/fetch";
 import { saveUser } from "../../../utils/localStorage";
@@ -18,13 +17,7 @@ if (form){
       return;
     }
 
-    const usuariosBase = await obtenerUsuarios();
-    const saveUsers = localStorage.getItem("users");
-    const usuariosRegistrados : IUsuario[] = saveUsers
-      ? JSON.parse(saveUsers) as IUsuario[] : [];
-    
-    const usuarios = [...usuariosBase, ...usuariosRegistrados];
-
+    const usuarios = await obtenerUsuarios();
     const userFound = usuarios.find(
       (usuario)=>
         usuario.mail === email && 

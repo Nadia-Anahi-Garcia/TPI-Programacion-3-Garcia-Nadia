@@ -128,6 +128,12 @@ const dibujarProductos = () : void => {
       );
   }
 
+    if (ordenProductos.value === "nombre-desc") {
+        productosFiltrados.sort((productoA, productoB) =>
+            productoB.nombre.localeCompare(productoA.nombre)
+        );
+    }
+
   if (ordenProductos.value === "precio-asc") {
       productosFiltrados.sort(
         (productoA, productoB) => productoA.precio - productoB.precio
@@ -158,6 +164,11 @@ const dibujarProductos = () : void => {
         <h3>${producto.nombre}</h3>
         <p>${producto.descripcion}</p>
         <p>$${producto.precio} </p>
+        <span class="badge-disponibilidad ${
+            producto.stock > 0 ? "" : "sin-stock"
+        }">
+            ${producto.stock > 0 ? "Disponible" : "Sin stock"}
+        </span>
         <a href="../productDetail/productDetail.html" class="btn-detalle">
           Ver detalle
         </a>

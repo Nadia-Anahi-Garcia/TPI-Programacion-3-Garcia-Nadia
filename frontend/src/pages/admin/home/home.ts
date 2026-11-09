@@ -1,7 +1,7 @@
 import "../../../main";
 import { logout } from "../../../utils/auth";
 import { obtenerCategorias,obtenerPedidos,obtenerProductos,obtenerUsuarios,} from "../../../utils/fetch";
-
+import { obtenerPedidosLocales } from "../../../utils/pedidos";
 // OBTENEMOS LOS ELEMENTOS DEL DOM QUE VAMOS A UTILIZAR
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
 const totalCategorias = document.getElementById("totalCategorias") as HTMLParagraphElement;
@@ -22,12 +22,17 @@ buttonLogout?.addEventListener("click", () => {
 // que va a cargar los datos del panel y que trabaja de manera asíncrona
 const cargarDashboard = async (): Promise<void> => {
   try {
-    const [categorias, productos, pedidos] = await Promise.all([
+    const [categorias, productos, pedidosBase] = await Promise.all([
       obtenerCategorias(),
       obtenerProductos(),
       obtenerPedidos(),
       obtenerUsuarios(),
     ]);
+
+    const pedidos = [
+      ...pedidosBase,
+      ...obtenerPedidosLocales(),
+    ];
     
     // FILTRA Y CREA UN A LISTA NUEVA DE CATEGORIAS QUE NO ESTÉN ELIMINADAS
     // NO MODIFICA EL ARRAY ORIGINAL. 

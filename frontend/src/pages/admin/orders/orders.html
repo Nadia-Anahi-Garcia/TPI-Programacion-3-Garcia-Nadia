@@ -57,6 +57,15 @@
           <option value="">Todos los clientes</option>
         </select>
 
+        <label for="filtroEstado">Filtrar por estado</label>
+        <select id="filtroEstado">
+          <option value="">Todos los estados</option>
+          <option value="PENDIENTE">Pendiente</option>
+          <option value="CONFIRMADO">Confirmado</option>
+          <option value="TERMINADO">Terminado</option>
+          <option value="CANCELADO">Cancelado</option>
+        </select>
+
         <p id="mensajePedidosAdmin"></p>
 
         <table>
@@ -75,17 +84,19 @@
           <tbody id="cuerpoTablaPedidos"></tbody>
         </table>
 
-        <section id="modalDetallePedido" hidden>
-          <button
-            type="button"
-            id="botonCerrarDetallePedido"
-            aria-label="Cerrar detalle"
-          >
-            <span class="material-symbols-outlined">close</span>
-            Cerrar
-          </button>
+        <section id="modalDetallePedido" class="modal" hidden>
+          <div class="modal-contenido">
+            <button
+                    type="button"
+                    id="botonCerrarDetallePedido"
+                    class="boton-cerrar-modal"
+                    aria-label="Cerrar detalle"
+            >
+              ×
+            </button>
 
-          <div id="detallePedidoAdmin"></div>
+            <div id="detallePedidoAdmin"></div>
+          </div>
         </section>
       </section>
     </main>

@@ -40,7 +40,7 @@ buttonLogout?.addEventListener("click", () => {
   logout();
 });
 
-// mOSTRAR EL NOMBRE DEL USUARIO
+// MOSTRAR EL NOMBRE DEL USUARIO
 const usuarioGuardado = getUSer();
 
 if (usuarioGuardado) {
@@ -158,7 +158,7 @@ botonCancelarCheckout.addEventListener("click", () => {
   seccionCheckout.hidden = true;
 });
 
-formCheckout.addEventListener("submit", (event) => {
+formCheckout.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const carrito = obtenerCarrito();
@@ -183,14 +183,22 @@ formCheckout.addEventListener("submit", (event) => {
     return;
   }
 
+    const telefono = String(formData.get("telefono") || "").trim();
+
+    if (!telefono) {
+        alert("Ingresá un teléfono de contacto.");
+        return;
+    }
+
   const subtotal = calcularTotalCarrito();
   const totalFinal = subtotal + COSTO_ENVIO;
 
-  const pedido = crearPedido(
-    carrito,
-    usuario.id,
-    formaPago,
-    totalFinal
+  const pedido = await crearPedido(
+        carrito,
+        usuario.id,
+        formaPago,
+        totalFinal,
+        telefono
   );
 
   vaciarCarrito();

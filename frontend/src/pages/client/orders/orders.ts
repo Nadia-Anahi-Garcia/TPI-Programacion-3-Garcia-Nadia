@@ -62,19 +62,32 @@ if(!usuarioGuardado){
             })
             .join("");
 
+            const subtotal = pedido.detalles.reduce(
+                (acumulador, detalle) => acumulador + detalle.subtotal,
+                0
+            );
+
+            const envio = pedido.total - subtotal;
+
+
             detallePedido.innerHTML = `
                 <h3>Pedido #${pedido.id}</h3>
-                <p>Fecha: ${pedido.fecha}</p>
-                <p>Estado: ${pedido.estado}</p>
+                <p>Fecha: ${new Date(pedido.fecha).toLocaleString("es-AR")}</p>
+                <p class="estado-pedido estado-${pedido.estado}">
+                    Estado: ${pedido.estado}
+                </p>
                 <p>Forma de pago: ${pedido.formaPago}</p>
+                <p>Teléfono: ${pedido.telefono || usuario.celular}</p>
                 <h4>Productos</h4>
                 <ul>
                     ${detallesHtml}
                 </ul>
+                <p>Subtotal: $${subtotal}</p>
+                <p>Envío: $${envio}</p>
                 <p><strong>Total: $${pedido.total}</strong></p>
-            `;
-            modalPedido.hidden = false;
-            };
+                `;
+                modalPedido.hidden = false;
+    };
     
     const dibujarPedidos = (pedidos : IPedido[], productos: IProduct[]): void =>{
         contenedorPedidos.innerHTML = "";
@@ -88,11 +101,26 @@ if(!usuarioGuardado){
         pedidos.forEach((pedido)=>{
             const card = document.createElement("article");
             card.className = "card-pedido";
+            const resumenProductos = pedido.detalles
+                .slice(0, 3)
+                .map((detalle) => {
+                    const producto = productos.find(
+                        (producto) => producto.id === detalle.idProducto
+                    );
+
+                    return `${detalle.cantidad} × ${
+                        producto?.nombre ?? "Producto no encontrado"
+                    }`;
+                })
+                .join(", ");
 
             card.innerHTML = `
                 <h3>Pedido #${pedido.id}</h3>
-                <p>Fecha: ${pedido.fecha}</p>
-                <p class="estado-pedido">Estado: ${pedido.estado}</p>
+                <p>Fecha: ${new Date(pedido.fecha).toLocaleString("es-AR")}</p>
+                <p class="estado-pedido estado-${pedido.estado}">
+                        Estado: ${pedido.estado}
+                </p>
+                <p>Productos: ${resumenProductos}</p>
                 <p>Total: $${pedido.total}</p>
 
                 <button type="button" class="btn-ver-detalle">

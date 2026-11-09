@@ -1,6 +1,8 @@
 // Importamos la interfaz
 import type { IUsuario } from "../../../types/usuario";
 import { obtenerUsuarios } from "../../../utils/fetch";
+import { saveUser } from "../../../utils/localStorage";
+import { navigate } from "../../../utils/navigate";
 
 // Obtenemos los elementos del DOM.
 const form = document.querySelector<HTMLFormElement>("#form");
@@ -47,12 +49,16 @@ if (form){
         }
 
         const newUser: IUsuario = {
-            id: Math.max(...usuarios.map((usuario) => usuario.id), 0) + 1,
+            id: Math.max(
+                0,
+                ...usuarios
+                    .map((usuario) => usuario.id)
+                    .filter((id) => Number.isSafeInteger(id) && id > 0)
+            ) + 1,
             nombre: nombre,
             apellido: apellido,
             celular: celular,
             mail: email,
-            password: password,
             rol: "USUARIO",
             eliminado: false
         };
@@ -61,9 +67,17 @@ if (form){
         usuariosRegistrados.push(newUser);
 
         localStorage.setItem("users", JSON.stringify(usuariosRegistrados));
+
+        saveUser(newUser)
         alert("Usuario registrado correctamente.");
+
         // Limpia los campos del registro
         form.reset();
+
+        // Lo lleva directamente al catálogo.
+        navigate("/src/pages/store/home/home.html");
+
+
 
 
     })

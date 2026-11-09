@@ -6,7 +6,7 @@ export interface IUsuario {
   apellido: string;
   mail: string;
   celular: string;
-  password: string;
+  password?: string;
   rol: Rol;
   eliminado: boolean;
 }

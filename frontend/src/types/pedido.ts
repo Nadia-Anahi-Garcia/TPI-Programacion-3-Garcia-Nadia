@@ -36,4 +36,5 @@ export interface IPedido {
   idUsuario?: number;
   usuarioDto?: IUsuarioPedido;
   detalles: IDetallePedido[];
+  telefono?: string;
 }

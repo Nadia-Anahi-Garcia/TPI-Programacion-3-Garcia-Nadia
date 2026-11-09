@@ -1,5 +1,6 @@
 import type { IPedido, IDetallePedido } from "../types/pedido";
 import type{ICartItem } from "../types/product";
+import { obtenerPedidos } from "./fetch";
 
 const PEDIDOS_LOCALES_KEY = "pedidosLocales";
 
@@ -19,12 +20,26 @@ export const guardarPedidosLocales = (pedidos : IPedido[]): void =>{
 
 }
 
-export const crearPedido = (
-    carrito : ICartItem[], 
-    idUsuario : number,
-    formaDePago : string,
-    total: number
-) : IPedido => {
+export const crearPedido = async (
+    carrito: ICartItem[],
+    idUsuario: number,
+    formaDePago: string,
+    total: number,
+    telefono: string
+): Promise<IPedido> => {
+
+    const pedidosBase = await obtenerPedidos();
+    const pedidosLocales = obtenerPedidosLocales();
+
+    const idsUsados = new Set(
+        [...pedidosBase, ...pedidosLocales].map(pedido => pedido.id)
+    );
+
+    let nuevoId = 1;
+
+    while (idsUsados.has(nuevoId)) {
+        nuevoId++;
+    }
 
     const detalles : IDetallePedido[] = carrito.map((item)=> {
         return{
@@ -35,15 +50,16 @@ export const crearPedido = (
     });
 
     const nuevoPedido: IPedido = {
-        id: Date.now(),
-        fecha: new Date().toISOString().slice(0,15),
+        id: nuevoId,
+        fecha: new Date().toISOString(),
         estado: "PENDIENTE",
         total: total,
         formaPago: formaDePago,
         idUsuario: idUsuario,
         detalles: detalles,
+        telefono: telefono,
     };
-    const pedidosLocales = obtenerPedidosLocales();
+
     pedidosLocales.push(nuevoPedido);
     guardarPedidosLocales(pedidosLocales);
 

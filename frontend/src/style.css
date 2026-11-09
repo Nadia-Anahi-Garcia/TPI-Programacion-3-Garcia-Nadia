@@ -178,16 +178,19 @@ label{
     margin: 0.2rem;
 }
 
-input{
+input,
+textarea {
     padding: 10px;
     border: 2px solid var(--color--borde);
     border-radius: 5px;
     margin-bottom: 12px;
     width: 100%;
     font-size: 13px;
+    font-family: inherit;
 }
 
-input:focus{
+input:focus,
+textarea:focus {
     border-color: var(--color--focus);
     outline: none;
 }
@@ -318,9 +321,13 @@ button:hover{
   line-height: 1.35;
 }
 
+.card-producto .btn-detalle {
+  margin-top: auto;
+}
+
 .card-producto .btn-agregar {
   width: 100%;
-  margin-top: auto;
+  margin-top: 0.6rem;
 }
 
 /* ===== CARRITO ===== */
@@ -665,16 +672,6 @@ footer{
     background-color: #842d2d;
 }
 
-#contenedorFormularioCategoria,
-#contenedorFormularioProducto,
-#modalDetallePedido {
-    max-width: 700px;
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    border-radius: var(--borderRadius);
-    background-color: var(--color--blanco);
-    box-shadow: var(--sombra);
-}
 
 #contenedorFormularioCategoria h3,
 #contenedorFormularioProducto h3,
@@ -690,6 +687,7 @@ footer{
 
 #formularioCategoria button,
 #formularioProducto button {
+
     margin-top: 0.35rem;
 }
 
@@ -711,86 +709,333 @@ footer{
     margin-bottom: 0.5rem;
 }
 
-/*Media Queries*/
+/* ===== DETALLE DE PRODUCTO ===== */
 
-@media screen and (max-width: 768px) {
-    header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1rem;
+#detalleProducto {
+  width: min(100% - 2rem, 420px);
+  margin: 2rem auto;
+}
+
+.detalle-producto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 2rem;
+  background-color: var(--color--blanco);
+  border-radius: var(--borderRadius);
+  box-shadow: var(--sombra);
+}
+
+.detalle-producto img {
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  border-radius: var(--borderRadius);
+  background-color: #fafafa;
+}
+
+.detalle-producto h2 {
+  color: var(--color--primario);
+  font-size: 1.8rem;
+}
+
+.detalle-producto p {
+  line-height: 1.5;
+}
+
+.detalle-producto .controles-cantidad {
+  width: fit-content;
+}
+
+#btnAgregarCarrito,
+#btnVolverCatalogo {
+  width: fit-content;
+}
+
+/* ===== MIS PEDIDOS ===== */
+
+.pedidosLayout {
+  width: min(100% - 2rem, 1100px);
+  margin: 2rem auto;
+}
+
+.pedidosLayout h2 {
+  margin-bottom: 1.2rem;
+  color: var(--color--primario);
+}
+
+#contenedorPedidos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.card-pedido {
+  padding: 1.2rem;
+  background-color: var(--color--blanco);
+  border-radius: var(--borderRadius);
+  box-shadow: var(--sombra);
+}
+
+.card-pedido h3 {
+  margin-bottom: 0.8rem;
+  color: var(--color--primario);
+}
+
+.card-pedido p {
+  margin-bottom: 0.45rem;
+}
+
+.estado-pedido {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.estado-PENDIENTE {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.estado-CONFIRMADO {
+    background-color: #cfe2ff;
+    color: #084298;
+}
+
+.estado-TERMINADO {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.estado-CANCELADO {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.btn-ver-detalle {
+  margin-top: 0.8rem;
+}
+
+/* ===== AJUSTES PUNTUALES DE ADMIN ===== */
+
+#ordenProductos,
+#filtroCliente,
+.selectEstadoPedido,
+#categoriaProducto {
+  padding: 0.65rem;
+  border: 1px solid var(--color--borde);
+  border-radius: 6px;
+  background-color: var(--color--blanco);
+  color: var(--color--texto);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.botonEditarCategoria,
+.botonEditarProducto,
+.botonVerDetallePedido,
+.botonEliminarCategoria,
+.botonEliminarProducto {
+  padding: 0.4rem 0.55rem;
+  font-size: 0.85rem;
+}
+
+.admin-sidebar > button {
+  padding: 0.5rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+/* ===== MODAL DETALLE DE PEDIDO ===== */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
+.modal-contenido {
+  position: relative;
+  width: min(100%, 600px);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 2rem;
+  background-color: var(--color--blanco);
+  border-radius: var(--borderRadius);
+  box-shadow: var(--boxShadow);
+}
+
+.modal-contenido h3 {
+  margin-bottom: 1rem;
+  color: var(--color--primario);
+}
+
+.modal-contenido p {
+  margin-bottom: 0.6rem;
+}
+
+.modal-contenido ul {
+  margin: 0.8rem 0 1rem 1.2rem;
+}
+
+.modal-contenido li {
+  margin-bottom: 0.5rem;
+}
+
+.boton-cerrar-modal {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.badge-disponibilidad {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 0.3rem 0.6rem;
+    margin-bottom: 0.6rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.badge-disponibilidad.sin-stock {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+#formularioCategoria button,
+#formularioProducto button {
+    width: 130px;
+    height: 36px;
+    justify-self: start;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+
+}
+
+
+#formularioCategoria button .material-symbols-outlined,
+#formularioProducto button .material-symbols-outlined {
+     font-size: 1rem;
+}
+
+    /*Media Queries*/
+
+    @media screen and (max-width: 768px) {
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem;
+        }
+
+        .menu-principal {
+            flex-wrap: wrap;
+        }
+
+        .catalogoLayout,
+        .contenidoCarrito {
+            grid-template-columns: 1fr;
+        }
+
+        .menuCategorias {
+            order: 0;
+        }
+
+        .container {
+            padding: 1rem;
+            align-items: flex-start;
+        }
+
+        .login__form {
+            width: 100%;
+            max-width: 23rem;
+            padding: 1.5rem;
+        }
+
+        #contenedorCategorias {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        #mostrarTodos,
+        .categoria-btn,
+        .btn-activo {
+            margin-bottom: 0;
+        }
+
+        .item-carrito {
+            align-items: flex-start;
+        }
     }
 
-    .menu-principal {
-        flex-wrap: wrap;
+    @media (max-width: 600px) {
+        .detalle-producto {
+            padding: 1.2rem;
+        }
+
+        .detalle-producto img {
+            height: 180px;
+        }
     }
 
-    .catalogoLayout,
-    .contenidoCarrito {
-        grid-template-columns: 1fr;
+    @media screen and (max-width: 468px) {
+        .marca h1 {
+            font-size: 1.5rem;
+        }
+
+        .menu-principal {
+            gap: 0.3rem;
+        }
+
+        .menu-principal a {
+            font-size: 0.9rem;
+        }
+
+        #contenedorCategorias {
+            grid-template-columns: 1fr;
+        }
+
+        .item-carrito {
+            flex-direction: column;
+        }
+
+        .login__form {
+            padding: 1.5rem;
+        }
+
+        .login__form h1 {
+            font-size: 1.5rem;
+        }
+
+        .login__form h2 {
+            font-size: 1rem;
+        }
     }
 
-    .menuCategorias {
-        order: 0;
-    }
-
-    .container {
-        padding: 1rem;
-        align-items: flex-start;
-    }
-
-    .login__form{
-        width: 100%;
-        max-width: 23rem;
-        padding: 1.5rem;
-    }
-
-    #contenedorCategorias {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+    #formularioProducto label[for="disponibleProducto"] {
+        display: flex;
+        align-items: center;
         gap: 0.5rem;
+        margin: 0.5rem 0;
     }
 
-    #mostrarTodos,
-    .categoria-btn,
-    .btn-activo {
-        margin-bottom: 0;
+    #formularioProducto #disponibleProducto {
+        width: 16px;
+        height: 16px;
+        margin: 0;
+        padding: 0;
+        accent-color: var(--color--primario);
     }
-
-     .item-carrito {
-        align-items: flex-start;
-    }
-}
-
-
-@media screen and (max-width: 468px) {
-    .marca h1 {
-    font-size: 1.5rem;
-  }
-
-    .menu-principal {
-        gap: 0.3rem;
-    }
-
-    .menu-principal a {
-        font-size: 0.9rem;
-    }
-
-    #contenedorCategorias {
-        grid-template-columns: 1fr;
-    }
-
-    .item-carrito {
-        flex-direction: column;
-    }
-    .login__form{
-        padding: 1.5rem;
-    }
-
-    .login__form h1{
-        font-size: 1.5rem;
-    }
-
-    .login__form h2{
-        font-size: 1rem;
-   }
-}

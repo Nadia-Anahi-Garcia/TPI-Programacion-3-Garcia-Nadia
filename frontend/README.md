@@ -1,4 +1,4 @@
-# Food Store - Evaluación de Programación III N.° 1
+# Food Store - Trabajo Práctico Integrador - Programación III
 
 
 ## Enlace al video. 
@@ -6,11 +6,16 @@
 
 ## Descripción
 
-Food Store es una aplicación frontend desarrollada como evaluación de Programación III.
+Food Store es una aplicación frontend desarrollada con HTML5,
+CSS3 y TypeScript utilizando Vite.
 
-Permite visualizar un catálogo de productos, buscar productos por nombre, filtrarlos por categoría y agregarlos a un carrito de compras persistente.
+Permite consultar el catálogo, buscar y filtrar productos,
+gestionar un carrito persistente, finalizar compras y consultar
+los pedidos realizados.
 
-El proyecto fue desarrollado con HTML5, CSS3 y TypeScript utilizando Vite. Conserva también el sistema de registro, inicio de sesión y protección de rutas realizado en el Trabajo Práctico Integrador de la unidad N° 4.
+Incluye registro e inicio de sesión, protección de rutas según
+el rol y un panel administrador para gestionar categorías,
+productos y pedidos.
 
 ## Funcionalidades Implementadas
 - **Catálogo Dinámico**:  Catálogo de productos cargado dinámicamente.
@@ -26,6 +31,17 @@ El proyecto fue desarrollado con HTML5, CSS3 y TypeScript utilizando Vite. Conse
     - Cálculo automático del total de la compra.
 - **Protección de rutas y Login**:
     - Registro, inicio y cierre de sesión.
+- **Finalizar compra**:
+    - Confirmación de los datos del comprador y forma de pago.
+    - Generación del pedido y actualización del stock.
+- **Mis pedidos**:
+    - Listado de pedidos del cliente.
+    - Consulta del detalle de cada pedido.
+- **Panel administrador**:
+    - Dashboard.
+    - Gestión de categorías y productos.
+    - Consulta de pedidos con filtros por cliente y estado.
+    - Actualización del estado de los pedidos.
 
 ## Tecnologías utilizadas
 
@@ -47,10 +63,12 @@ El proyecto fue desarrollado con HTML5, CSS3 y TypeScript utilizando Vite. Conse
     ```bash
     pnpm install
     ```
-
 4. Ejecutar el proyecto: 
+     ```bash
+    pnpm  dev
     ```
-
+5. Abrir en el navegador la dirección que muestra la terminal.
+6. 
 ## Credenciales de prueba
 
 - Administrador: admin@admin.com — contraseña: 123456

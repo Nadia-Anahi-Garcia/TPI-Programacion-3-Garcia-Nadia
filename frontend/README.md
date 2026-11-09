@@ -3,8 +3,6 @@
 
 ## Enlace al video. 
 
-https://www.youtube.com/watch?v=Ah9fqsa5pT4
-
 
 ## Descripción
 
@@ -52,6 +50,24 @@ El proyecto fue desarrollado con HTML5, CSS3 y TypeScript utilizando Vite. Conse
 
 4. Ejecutar el proyecto: 
     ```
+
+## Credenciales de prueba
+
+- Administrador: admin@admin.com — contraseña: 123456
+- Cliente: cliente@food.com — contraseña: cliente123
+
+## Costo de envío
+
+El envío es gratuito: COSTO_ENVIO = 0.
+La constante está definida en src/pages/store/cart/cart.ts.
+El total del pedido se calcula como subtotal + envío.
+
+## Registro de clientes
+
+El registro inicia sesión automáticamente y guarda el perfil
+sin contraseña. Al cerrar sesión, ese cliente no puede volver
+a autenticarse con la contraseña del registro.
+Para probar el login se utilizan las cuentas de usuarios.json.
     pnpm dev
     ```
 5. Abrir en el navegador la dirección indicada por Vite, generalmente: 

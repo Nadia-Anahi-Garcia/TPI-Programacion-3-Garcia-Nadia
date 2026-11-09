@@ -150,7 +150,7 @@ const mostrarDetallePedido = (pedido: IPedido): void => {
 
     <div class="pedido-datos-cliente">
       <p><strong>Cliente:</strong> ${obtenerNombreCliente(pedido)}</p>
-      <p><strong>Fecha:</strong> $new Date(pedido.fecha).toLocaleString("es-AR")}</p>
+      <p><strong>Fecha:</strong> ${new Date(pedido.fecha).toLocaleString("es-AR")}</p>
       <p><strong>Teléfono:</strong> ${pedido.telefono || cliente?.celular || "Sin informar"}</p>
       <p><strong>Método de pago:</strong> ${pedido.formaPago}</p>
       <span class="estado-pedido estado-${pedido.estado}">

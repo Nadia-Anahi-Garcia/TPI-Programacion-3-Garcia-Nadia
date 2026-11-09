@@ -33,7 +33,7 @@ productos y pedidos.
     - Registro, inicio y cierre de sesión.
 - **Finalizar compra**:
     - Confirmación de los datos del comprador y forma de pago.
-    - Generación del pedido y actualización del stock.
+   - Generación y almacenamiento del pedido en localStorage.
 - **Mis pedidos**:
     - Listado de pedidos del cliente.
     - Consulta del detalle de cada pedido.
@@ -68,7 +68,7 @@ productos y pedidos.
     pnpm  dev
     ```
 5. Abrir en el navegador la dirección que muestra la terminal.
-6. 
+
 ## Credenciales de prueba
 
 - Administrador: admin@admin.com — contraseña: 123456

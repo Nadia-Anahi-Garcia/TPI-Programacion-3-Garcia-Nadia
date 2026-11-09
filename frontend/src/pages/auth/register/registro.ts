@@ -3,6 +3,7 @@ import type { IUsuario } from "../../../types/usuario";
 import { obtenerUsuarios } from "../../../utils/fetch";
 import { saveUser } from "../../../utils/localStorage";
 import { navigate } from "../../../utils/navigate";
+import { obtenerPedidosLocales } from "../../../utils/pedidos";
 
 // Obtenemos los elementos del DOM.
 const form = document.querySelector<HTMLFormElement>("#form");
@@ -28,18 +29,14 @@ if (form){
         ) {
             return;
         }
-           
 
-        
-        const usuariosBase  = await obtenerUsuarios();
 
-        const savedUsers = localStorage.getItem("users");
-        const usuariosRegistrados: IUsuario[] = savedUsers
-             ? JSON.parse(savedUsers) as IUsuario[]
-            : [];
 
-        const usuarios = [...usuariosBase, ...usuariosRegistrados];
+        const usuarios = await obtenerUsuarios();
 
+        const idsClientesConPedidos = obtenerPedidosLocales().map(
+            (pedido) => pedido.usuarioDto?.id ?? pedido.idUsuario ?? 0
+        );
         const emailExists = usuarios.some((usuario) => usuario.mail === email);
         
         // Válida que si el email existe salga un alerta
@@ -51,9 +48,8 @@ if (form){
         const newUser: IUsuario = {
             id: Math.max(
                 0,
-                ...usuarios
-                    .map((usuario) => usuario.id)
-                    .filter((id) => Number.isSafeInteger(id) && id > 0)
+                ...usuarios.map((usuario) => usuario.id),
+                ...idsClientesConPedidos
             ) + 1,
             nombre: nombre,
             apellido: apellido,
@@ -63,10 +59,6 @@ if (form){
             eliminado: false
         };
 
-        // Agrega un nuevo objeto al array
-        usuariosRegistrados.push(newUser);
-
-        localStorage.setItem("users", JSON.stringify(usuariosRegistrados));
 
         saveUser(newUser)
         alert("Usuario registrado correctamente.");

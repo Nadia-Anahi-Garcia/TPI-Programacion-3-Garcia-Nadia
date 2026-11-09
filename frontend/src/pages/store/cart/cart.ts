@@ -195,7 +195,7 @@ formCheckout.addEventListener("submit", async (event) => {
 
   const pedido = await crearPedido(
         carrito,
-        usuario.id,
+        usuario,
         formaPago,
         totalFinal,
         telefono

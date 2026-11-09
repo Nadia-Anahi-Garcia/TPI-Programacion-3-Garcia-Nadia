@@ -1,4 +1,4 @@
-import type { IPedido, IDetallePedido } from "../types/pedido";
+import type { IPedido, IDetallePedido, IUsuarioPedido } from "../types/pedido";
 import type{ICartItem } from "../types/product";
 import { obtenerPedidos } from "./fetch";
 
@@ -22,7 +22,7 @@ export const guardarPedidosLocales = (pedidos : IPedido[]): void =>{
 
 export const crearPedido = async (
     carrito: ICartItem[],
-    idUsuario: number,
+    usuario: IUsuarioPedido,
     formaDePago: string,
     total: number,
     telefono: string
@@ -55,7 +55,15 @@ export const crearPedido = async (
         estado: "PENDIENTE",
         total: total,
         formaPago: formaDePago,
-        idUsuario: idUsuario,
+        idUsuario: usuario.id,
+        usuarioDto: {
+            id: usuario.id,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            mail: usuario.mail,
+            celular: usuario.celular,
+            rol: usuario.rol,
+        },
         detalles: detalles,
         telefono: telefono,
     };

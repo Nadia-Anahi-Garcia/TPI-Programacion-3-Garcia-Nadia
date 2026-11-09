@@ -1,9 +1,8 @@
 import "../../../main";
 import { logout } from "../../../utils/auth";
 import {obtenerPedidos,obtenerProductos,obtenerUsuarios,} from "../../../utils/fetch";
-import type { IPedido } from "../../../types/pedido";
+import type { IPedido, IUsuarioPedido } from "../../../types/pedido";
 import type { IProduct } from "../../../types/product";
-import type { IUsuario } from "../../../types/usuario";
 import { obtenerPedidosLocales } from "../../../utils/pedidos";
 
 // OBTENEMOS LOS ELEMENTOS DEL DOM
@@ -14,7 +13,7 @@ const filtroEstado = document.getElementById(
     "filtroEstado"
 ) as HTMLSelectElement;
 const mensajePedidosAdmin = document.getElementById("mensajePedidosAdmin") as HTMLParagraphElement;
-const cuerpoTablaPedidos = document.getElementById("cuerpoTablaPedidos") as HTMLTableSectionElement;
+const contenedorPedidosAdmin = document.getElementById("contenedorPedidosAdmin") as HTMLElement;
 const modalDetallePedido = document.getElementById("modalDetallePedido") as HTMLElement;
 const detallePedidoAdmin = document.getElementById("detallePedidoAdmin") as HTMLElement;
 const botonCerrarDetallePedido = document.getElementById("botonCerrarDetallePedido") as HTMLButtonElement;
@@ -22,7 +21,7 @@ const botonCerrarDetallePedido = document.getElementById("botonCerrarDetallePedi
 // ESTADO DE LA PÁGINA
 
 let pedidos: IPedido[] = [];
-let usuarios: IUsuario[] = [];
+let usuarios: IUsuarioPedido[] = [];
 let productos: IProduct[] = [];
 
 // EVENTO CERRAR SESIÓN
@@ -171,7 +170,7 @@ const mostrarDetallePedido = (pedido: IPedido): void => {
 // FUNCIÓN PARA MOSTRAR LOS PEDIDOS
 
 const mostrarPedidos = (): void => {
-  cuerpoTablaPedidos.innerHTML = "";
+  contenedorPedidosAdmin.innerHTML = "";
 
   const idClienteSeleccionado = Number(filtroCliente.value);
 
@@ -187,88 +186,52 @@ const mostrarPedidos = (): void => {
 
         return coincideCliente && coincideEstado;
       })
-    .sort((pedidoA, pedidoB) => {
-      return (
-        new Date(pedidoB.fecha).getTime() -
-        new Date(pedidoA.fecha).getTime()
-      );
-    });
+      .sort((pedidoA, pedidoB) => {
+        return (
+            new Date(pedidoB.fecha).getTime() -
+            new Date(pedidoA.fecha).getTime()
+        );
+      });
 
   if (pedidosFiltrados.length === 0) {
-    mensajePedidosAdmin.textContent =
-      "No hay pedidos para mostrar.";
+    mensajePedidosAdmin.textContent = "No hay pedidos para mostrar.";
     return;
   }
 
   mensajePedidosAdmin.textContent = "";
 
-  const estados = obtenerEstadosPedidos();
-
   pedidosFiltrados.forEach((pedido) => {
     const cantidadProductos = pedido.detalles.reduce(
-      (acumulador, detalle) => {
-        return acumulador + detalle.cantidad;
-      },
-      0
+        (acumulador, detalle) => acumulador + detalle.cantidad,
+        0
     );
 
-    const opcionesEstado = estados
-      .map((estado) => {
-        const seleccionado =
-          estado === pedido.estado ? "selected" : "";
+    const tarjeta = document.createElement("article");
+    tarjeta.className = "card-pedido";
 
-        return `
-          <option value="${estado}" ${seleccionado}>
-            ${estado}
-          </option>
-        `;
-      })
-      .join("");
+    tarjeta.innerHTML = `
+      <div class="encabezado-pedido-admin">
+        <h3>Pedido #${pedido.id}</h3>
+        <span class="estado-pedido estado-${pedido.estado}">
+          ${pedido.estado}
+        </span>
+      </div>
 
-    const fila = document.createElement("tr");
+      <p>Cliente: ${obtenerNombreCliente(pedido)}</p>
+      <p>Fecha: ${new Date(pedido.fecha).toLocaleString("es-AR")}</p>
+      <p>Cantidad de productos: ${cantidadProductos}</p>
+      <p><strong>Total: $${pedido.total}</strong></p>
 
-    fila.innerHTML = `
-      <td>${pedido.id}</td>
-      <td>${obtenerNombreCliente(pedido)}</td>
-      <td>${new Date(pedido.fecha).toLocaleString("es-AR")}</td>
-      <td>
-        <select class="selectEstadoPedido">
-          ${opcionesEstado}
-        </select>
-      </td>
-      <td>${cantidadProductos}</td>
-      <td>$${pedido.total}</td>
-      <td>
-        <button
-          type="button"
-          class="botonVerDetallePedido"
-        >
-          <span class="material-symbols-outlined">visibility</span>
-          Ver detalle
-        </button>
-      </td>
+      <button type="button" class="botonVerDetallePedido">
+        Ver detalle
+      </button>
     `;
 
-    const selectEstadoPedido = fila.querySelector(
-      ".selectEstadoPedido"
-    ) as HTMLSelectElement;
-
-    const botonVerDetallePedido = fila.querySelector(
-      ".botonVerDetallePedido"
-    ) as HTMLButtonElement;
-
-    selectEstadoPedido.addEventListener("change", () => {
-      pedido.estado = selectEstadoPedido.value;
-      mostrarPedidos();
-      mensajePedidosAdmin.textContent =
-        "Estado del pedido actualizado correctamente.";
-    });
-
-    botonVerDetallePedido.addEventListener("click", () => {
+    tarjeta.addEventListener("click", () => {
       mostrarDetallePedido(pedido);
     });
 
-    cuerpoTablaPedidos.appendChild(fila);
+    contenedorPedidosAdmin.appendChild(tarjeta);
   });
 };
 
@@ -303,16 +266,18 @@ const cargarPedidos = async (): Promise<void> => {
       ...pedidosObtenidos,
       ...obtenerPedidosLocales(),
     ];
-    const usuariosGuardados = localStorage.getItem("users");
+    usuarios = [...usuariosObtenidos];
 
-    const usuariosLocales: IUsuario[] = usuariosGuardados
-        ? JSON.parse(usuariosGuardados)
-        : [];
+    pedidos.forEach((pedido) => {
+      const cliente = pedido.usuarioDto;
 
-    usuarios = [
-      ...usuariosObtenidos,
-      ...usuariosLocales,
-    ];
+      if (
+          cliente &&
+          !usuarios.some((usuario) => usuario.id === cliente.id)
+      ) {
+        usuarios.push(cliente);
+      }
+    });
     productos = productosObtenidos;
 
     cargarFiltroClientes();

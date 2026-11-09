@@ -64,14 +64,12 @@ El total del pedido se calcula como subtotal + envío.
 
 ## Registro de clientes
 
-El registro inicia sesión automáticamente y guarda el perfil
-sin contraseña. Al cerrar sesión, ese cliente no puede volver
-a autenticarse con la contraseña del registro.
-Para probar el login se utilizan las cuentas de usuarios.json.
-    pnpm dev
-    ```
-5. Abrir en el navegador la dirección indicada por Vite, generalmente: 
-    ```
-    http://localhost:5173
-    ```
+El registro inicia sesión automáticamente. Los datos de sesión
+se guardan en userData, sin contraseña. No se mantiene una lista
+permanente de usuarios registrados.
 
+Al cerrar sesión, el cliente registrado no puede volver a ingresar
+con esa contraseña. El login utiliza las cuentas de usuarios.json.
+
+Los pedidos se conservan en pedidosLocales e incluyen los datos
+del comprador en usuarioDto, sin contraseña.

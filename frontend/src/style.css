@@ -135,7 +135,8 @@ header {
     padding: 1rem;
 }
 
-.login__form{
+.login__form
+#seccionCheckout{
     display: flex;
     flex-direction: column;
     background-color: var(--color--blanco);
@@ -182,7 +183,8 @@ label{
 }
 
 input,
-textarea {
+textarea,
+#formaPago {
     padding: 10px;
     border: 2px solid var(--color--borde);
     border-radius: 5px;
@@ -190,10 +192,13 @@ textarea {
     width: 100%;
     font-size: 13px;
     font-family: inherit;
+    background-color: var(--color--blanco);
+    color: var(--color--texto);
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+#formaPago:focus {
     border-color: var(--color--focus);
     outline: none;
 }
@@ -351,6 +356,7 @@ button:hover{
   grid-template-columns: 1fr 300px;
   gap: 1.5rem;
   align-items: start;
+  margin-bottom: 1.5rem;
 }
 
 .itemsCarrito,
@@ -425,7 +431,8 @@ button:hover{
   color: #842d2d;
 }
 
-.resumenCarrito h3 {
+.resumenCarrito h3,
+#seccionCheckout h3 {
   margin-bottom: 1rem;
   color: var(--color--primario);
   font-size: 1.4rem;
@@ -765,14 +772,14 @@ footer{
 }
 
 #formularioCategoria,
-#formularioProducto {
+#formularioProducto{
     display: grid;
 }
 
 #formularioCategoria button,
-#formularioProducto button {
-
-    margin-top: 0.35rem;
+#formularioProducto button,
+#formCheckout button {
+    margin: 0.35rem 0.5rem 0 0;
 }
 
 #filtroCliente {

@@ -2,6 +2,8 @@ import "../../../main";
 import { logout } from "../../../utils/auth";
 import { obtenerCategorias } from "../../../utils/fetch";
 import type { ICategoria } from "../../../types/categoria";
+import { getUSer } from "../../../utils/localStorage";
+import type { IUsuario } from "../../../types/usuario";
 
 // OBTENEMOS LOS ELEMENTOS DEL DOM
 const botonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
@@ -21,6 +23,16 @@ const idCategoria = document.getElementById("idCategoria") as HTMLInputElement;
 // ESTADO DE LAS CATEGORÍAS EN ESTA PÁGINA
 let categorias: ICategoria[] = [];
 
+// MOSTRAR EL NOMBRE DEL ADMINISTRADOR
+const nombreUsuario = document.getElementById("nombreUsuario");
+const usuarioGuardado = getUSer();
+
+if (nombreUsuario && usuarioGuardado) {
+  const usuario: IUsuario = JSON.parse(usuarioGuardado);
+
+  nombreUsuario.textContent =
+      `${usuario.nombre} ${usuario.apellido ?? ""}`.trim();
+}
 // EVENTO CERRAR SESIÓN
 
 botonLogout.addEventListener("click", () => {

@@ -2,6 +2,9 @@ import "../../../main";
 import { logout } from "../../../utils/auth";
 import { obtenerCategorias,obtenerPedidos,obtenerProductos,obtenerUsuarios,} from "../../../utils/fetch";
 import { obtenerPedidosLocales } from "../../../utils/pedidos";
+import { getUSer } from "../../../utils/localStorage";
+import type { IUsuario } from "../../../types/usuario";
+
 // OBTENEMOS LOS ELEMENTOS DEL DOM QUE VAMOS A UTILIZAR
 const buttonLogout = document.getElementById("logoutButton") as HTMLButtonElement;
 const totalCategorias = document.getElementById("totalCategorias") as HTMLParagraphElement;
@@ -12,13 +15,19 @@ const productosActivos = document.getElementById("productosActivos") as HTMLSpan
 const productosInactivos = document.getElementById("productosInactivos") as HTMLSpanElement;
 const pedidosPorEstado = document.getElementById("pedidosPorEstado") as HTMLUListElement;
 const mensajeDashboard = document.getElementById("mensajeDashboard") as HTMLParagraphElement;
-const categoriasActivasResumen = document.getElementById(
-    "categoriasActivasResumen"
-) as HTMLSpanElement;
+const categoriasActivasResumen = document.getElementById("categoriasActivasResumen") as HTMLSpanElement;
+const categoriasInactivasResumen = document.getElementById("categoriasInactivasResumen") as HTMLSpanElement;
 
-const categoriasInactivasResumen = document.getElementById(
-    "categoriasInactivasResumen"
-) as HTMLSpanElement;
+// MOSTRAR EL NOMBRE DEL ADMINISTRADOR
+const nombreUsuario = document.getElementById("nombreUsuario");
+const usuarioGuardado = getUSer();
+
+if (nombreUsuario && usuarioGuardado) {
+  const usuario: IUsuario = JSON.parse(usuarioGuardado);
+
+  nombreUsuario.textContent =
+      `${usuario.nombre} ${usuario.apellido ?? ""}`.trim();
+}
 // EVENTO DE CIERRE DE SESIÓN
 buttonLogout?.addEventListener("click", () => {
   logout();

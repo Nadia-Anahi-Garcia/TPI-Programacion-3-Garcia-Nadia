@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "fecha": "2026-06-08",
+    "fecha": "2026-06-08T12:00:00-03:00",
     "estado": "TERMINADO",
     "total": 11000,
     "formaPago": "TARJETA",
@@ -22,7 +22,7 @@
   },
   {
     "id": 2,
-    "fecha": "2026-06-09",
+    "fecha": "2026-06-09T13:30:00-03:00",
     "estado": "CONFIRMADO",
     "total": 16400,
     "formaPago": "EFECTIVO",
@@ -47,7 +47,7 @@
   },
   {
     "id": 3,
-    "fecha": "2026-06-10",
+    "fecha": "2026-06-10T20:00:00-03:00",
     "estado": "PENDIENTE",
     "total": 6100,
     "formaPago": "TRANSFERENCIA",

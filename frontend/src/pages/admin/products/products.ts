@@ -3,6 +3,8 @@ import { logout } from "../../../utils/auth";
 import {obtenerCategorias, obtenerProductos} from "../../../utils/fetch";
 import type { ICategoria } from "../../../types/categoria";
 import type { IProduct } from "../../../types/product";
+import { getUSer } from "../../../utils/localStorage";
+import type { IUsuario } from "../../../types/usuario";
 
 
 // OBTENEMOS LOS ELEMENTOS DEL DOM
@@ -29,6 +31,16 @@ const botonCancelarProducto = document.getElementById("botonCancelarProducto") a
 let productos: IProduct[] = [];
 let categorias: ICategoria[] = [];
 
+// MOSTRAR EL NOMBRE DEL ADMINISTRADOR
+const nombreUsuario = document.getElementById("nombreUsuario");
+const usuarioGuardado = getUSer();
+
+if (nombreUsuario && usuarioGuardado) {
+  const usuario: IUsuario = JSON.parse(usuarioGuardado);
+
+  nombreUsuario.textContent =
+      `${usuario.nombre} ${usuario.apellido ?? ""}`.trim();
+}
 // EVENTO CERRAR SESIÓN
 botonLogout.addEventListener("click", () => {
   logout();

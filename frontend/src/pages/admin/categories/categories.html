@@ -14,9 +14,33 @@
 </head>
 <body>
 
+<header>
+  <div class="marca">
+    <img src="/assets/icono-food-store.png" alt="Logo Food Store">
+    <h1>Food Store</h1>
+  </div>
+
+  <nav class="menu-principal">
+    <a href="../../store/home/home.html">
+      <span class="material-symbols-outlined">storefront</span>
+      Tienda
+    </a>
+
+    <a href="../home/home.html" aria-current="page">
+      <span class="material-symbols-outlined">admin_panel_settings</span>
+      Panel Admin
+    </a>
+
+    <span id="nombreUsuario"></span>
+
+    <button id="logoutButton" type="button">
+      Cerrar sesión
+    </button>
+  </nav>
+</header>
+
     <main class="admin-layout">
       <aside class="admin-sidebar">
-        <h1>Food Store</h1>
 
         <nav>
           <a href="../home/home.html">
@@ -24,7 +48,7 @@
             Dashboard
           </a>
 
-          <a href="./categories.html">
+          <a href="./categories.html" aria-current="page">
             <span class="material-symbols-outlined">category</span>
             Categorías
           </a>
@@ -44,11 +68,6 @@
             Ver tienda
           </a>
         </nav>
-
-        <button id="logoutButton">
-          <span class="material-symbols-outlined">logout</span>
-          Cerrar sesión
-        </button>
       </aside>
 
       <section class="admin-content">

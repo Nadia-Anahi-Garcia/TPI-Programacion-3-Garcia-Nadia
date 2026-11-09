@@ -12,9 +12,32 @@
     />
 </head>
 <body>
+<header>
+  <div class="marca">
+    <img src="/assets/icono-food-store.png" alt="Logo Food Store">
+    <h1>Food Store</h1>
+  </div>
+
+  <nav class="menu-principal">
+    <a href="../../store/home/home.html">
+      <span class="material-symbols-outlined">storefront</span>
+      Tienda
+    </a>
+
+    <a href="../home/home.html" aria-current="page">
+      <span class="material-symbols-outlined">admin_panel_settings</span>
+      Panel Admin
+    </a>
+
+    <span id="nombreUsuario"></span>
+
+    <button id="logoutButton" type="button">
+      Cerrar sesión
+    </button>
+  </nav>
+</header>
     <main class="admin-layout">
       <aside class="admin-sidebar">
-        <h1>Food Store</h1>
 
         <nav>
           <a href="../home/home.html">
@@ -32,7 +55,7 @@
             Productos
           </a>
 
-          <a href="./orders.html">
+          <a href="./orders.html" aria-current="page">
             <span class="material-symbols-outlined">receipt_long</span>
             Pedidos
           </a>
@@ -42,29 +65,30 @@
             Ver tienda
           </a>
         </nav>
-
-        <button id="logoutButton">
-          <span class="material-symbols-outlined">logout</span>
-          Cerrar sesión
-        </button>
       </aside>
 
       <section class="admin-content">
         <h2>Gestión de pedidos</h2>
 
-        <label for="filtroCliente">Filtrar por cliente</label>
-        <select id="filtroCliente">
-          <option value="">Todos los clientes</option>
-        </select>
+        <div class="filtros-pedidos-admin">
+          <div class="filtro-pedido-admin">
+            <label for="filtroCliente">Filtrar por cliente</label>
+            <select id="filtroCliente">
+              <option value="">Todos los clientes</option>
+            </select>
+          </div>
 
-        <label for="filtroEstado">Filtrar por estado</label>
-        <select id="filtroEstado">
-          <option value="">Todos los estados</option>
-          <option value="PENDIENTE">Pendiente</option>
-          <option value="CONFIRMADO">Confirmado</option>
-          <option value="TERMINADO">Terminado</option>
-          <option value="CANCELADO">Cancelado</option>
-        </select>
+          <div class="filtro-pedido-admin">
+            <label for="filtroEstado">Filtrar por estado</label>
+            <select id="filtroEstado">
+              <option value="">Todos los estados</option>
+              <option value="PENDIENTE">Pendiente</option>
+              <option value="CONFIRMADO">Confirmado</option>
+              <option value="TERMINADO">Terminado</option>
+              <option value="CANCELADO">Cancelado</option>
+            </select>
+          </div>
+        </div>
 
         <p id="mensajePedidosAdmin"></p>
 

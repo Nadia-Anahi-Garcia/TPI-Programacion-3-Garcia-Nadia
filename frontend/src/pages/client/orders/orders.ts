@@ -42,25 +42,30 @@ if(!usuarioGuardado){
     const usuario : IUsuario = JSON.parse(usuarioGuardado);
     nombreUsuario.textContent = `${usuario.nombre} ${usuario.apellido}`;
     const mostrarDetallePedido = (pedido : IPedido, productos : IProduct[]): void =>{
-        const detallesHtml = pedido.detalles
-            .map((detalle)=>{
-                const producto = productos.find((producto)=>{
-                    return producto.id === detalle.idProducto;
-                });
+        const detallesHtml = pedido.detalles.map(detalle => {
+            const producto = detalle.producto || productos.find(
+                producto => producto.id === detalle.idProducto
+            );
 
-                const nombreProducto = producto
-                    ?producto.nombre
-                    :"Producto no encontrado";
-                
-                return `
-                    <li>
-                        ${nombreProducto} —
-                        Cantidad: ${detalle.cantidad} —
-                        Subtotal: $${detalle.subtotal}
-                    </li>
-                `;
-            })
-            .join("");
+            const precioUnitario = detalle.cantidad > 0
+                ? detalle.subtotal / detalle.cantidad
+                : 0;
+
+            return `
+                <li class="pedido-producto">
+                    <div class="pedido-producto-info">
+                        <strong>${producto?.nombre || "Producto no encontrado"}</strong>
+                        <span>
+                            Cantidad: ${detalle.cantidad} × $${precioUnitario.toFixed(2)}
+                        </span>
+                    </div>
+
+                    <strong class="pedido-producto-subtotal">
+                        $${detalle.subtotal.toFixed(2)}
+                    </strong>
+                </li>
+            `;
+        }).join("");
 
             const subtotal = pedido.detalles.reduce(
                 (acumulador, detalle) => acumulador + detalle.subtotal,
@@ -70,22 +75,41 @@ if(!usuarioGuardado){
             const envio = pedido.total - subtotal;
 
 
-            detallePedido.innerHTML = `
-                <h3>Pedido #${pedido.id}</h3>
-                <p>Fecha: ${new Date(pedido.fecha).toLocaleString("es-AR")}</p>
-                <p class="estado-pedido estado-${pedido.estado}">
-                    Estado: ${pedido.estado}
-                </p>
-                <p>Forma de pago: ${pedido.formaPago}</p>
-                <p>Teléfono: ${pedido.telefono || usuario.celular}</p>
-                <h4>Productos</h4>
-                <ul>
-                    ${detallesHtml}
-                </ul>
-                <p>Subtotal: $${subtotal}</p>
-                <p>Envío: $${envio}</p>
-                <p><strong>Total: $${pedido.total}</strong></p>
-                `;
+        detallePedido.innerHTML = `
+                <h3>Detalle del pedido #${pedido.id}</h3>
+
+                <div class="pedido-datos-cliente">
+                    <p><strong>Cliente:</strong> ${usuario.nombre} ${usuario.apellido}</p>
+                    <p><strong>Fecha:</strong> ${new Date(pedido.fecha).toLocaleString("es-AR")}</p>
+                    <p><strong>Teléfono:</strong> ${pedido.telefono || usuario.celular || "Sin informar"}</p>
+                    <p><strong>Método de pago:</strong> ${pedido.formaPago}</p>
+                    <span class="estado-pedido estado-${pedido.estado}">
+                        ${pedido.estado}
+                    </span>
+                </div>
+
+                <section class="pedido-seccion-productos">
+                    <h4>Productos</h4>
+                    <ul class="pedido-lista-productos">
+                        ${detallesHtml}
+                    </ul>
+                </section>
+
+                <div class="pedido-resumen-totales">
+                    <p>
+                        <span>Subtotal:</span>
+                        <span>$${subtotal.toFixed(2)}</span>
+                    </p>
+                    <p>
+                        <span>Envío:</span>
+                        <span>$${envio.toFixed(2)}</span>
+                    </p>
+                    <p class="pedido-total">
+                        <strong>Total:</strong>
+                        <strong>$${pedido.total.toFixed(2)}</strong>
+                    </p>
+                </div>
+            `;
                 modalPedido.hidden = false;
     };
     

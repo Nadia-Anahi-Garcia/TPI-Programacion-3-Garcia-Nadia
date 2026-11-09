@@ -13,13 +13,37 @@
 </head>
 
 <body>
+    <header>
+        <div class="marca">
+            <img src="/assets/icono-food-store.png" alt="Logo Food Store">
+            <h1>Food Store</h1>
+        </div>
+
+        <nav class="menu-principal">
+            <a href="../../store/home/home.html">
+                <span class="material-symbols-outlined">storefront</span>
+                Tienda
+            </a>
+
+        <a href="./home.html" aria-current="page">
+            <span class="material-symbols-outlined">admin_panel_settings</span>
+            Panel Admin
+        </a>
+
+        <span id="nombreUsuario"></span>
+
+        <button id="logoutButton" type="button">
+            Cerrar sesión
+        </button>
+    </nav>
+</header>
+
 
     <main class="admin-layout">
         <aside class="admin-sidebar">
-            <h1>Food Store</h1>
 
             <nav>
-          <a href="../home/home.html">
+          <a href="../home/home.html" aria-current="page">
             <span class="material-symbols-outlined">dashboard</span>
             Dashboard
           </a>
@@ -44,9 +68,7 @@
             Ver tienda
           </a>
         </nav>
-            <button id="logoutButton">Cerrar sesión</button>
         </aside>
-
         <section class="admin-content">
             <h2>Dashboard</h2>
             <p>Resumen general de Food Store</p>
@@ -57,21 +79,33 @@
                 <article class="dashboard-card">
                     <h3>Total de categorías</h3>
                     <p id="totalCategorias">0</p>
+                    <a href="../categories/categories.html" class="btn-gestionar">
+                        Gestionar
+                    </a>
                 </article>
 
                 <article class="dashboard-card">
                     <h3>Total de productos</h3>
                     <p id="totalProductos">0</p>
+                    <a href="../products/products.html" class="btn-gestionar">
+                        Gestionar
+                    </a>
                 </article>
 
                 <article class="dashboard-card">
                     <h3>Total de pedidos</h3>
                     <p id="totalPedidos">0</p>
+                    <a href="../orders/orders.html" class="btn-gestionar">
+                        Gestionar
+                    </a>
                 </article>
 
                 <article class="dashboard-card">
                     <h3>Productos disponibles</h3>
                     <p id="productosDisponibles">0</p>
+                    <small class="dashboard-descripcion">
+                        Activos y disponibles
+                    </small>
                 </article>
             </section>
 

@@ -4,6 +4,8 @@ import {obtenerPedidos,obtenerProductos,obtenerUsuarios,} from "../../../utils/f
 import type { IPedido, IUsuarioPedido } from "../../../types/pedido";
 import type { IProduct } from "../../../types/product";
 import { obtenerPedidosLocales } from "../../../utils/pedidos";
+import { getUSer } from "../../../utils/localStorage";
+import type { IUsuario } from "../../../types/usuario";
 
 // OBTENEMOS LOS ELEMENTOS DEL DOM
 
@@ -18,11 +20,23 @@ const modalDetallePedido = document.getElementById("modalDetallePedido") as HTML
 const detallePedidoAdmin = document.getElementById("detallePedidoAdmin") as HTMLElement;
 const botonCerrarDetallePedido = document.getElementById("botonCerrarDetallePedido") as HTMLButtonElement;
 
+
 // ESTADO DE LA PÁGINA
 
 let pedidos: IPedido[] = [];
 let usuarios: IUsuarioPedido[] = [];
 let productos: IProduct[] = [];
+
+// MOSTRAR EL NOMBRE DEL ADMINISTRADOR
+const nombreUsuario = document.getElementById("nombreUsuario");
+const usuarioGuardado = getUSer();
+
+if (nombreUsuario && usuarioGuardado) {
+  const usuario: IUsuario = JSON.parse(usuarioGuardado);
+
+  nombreUsuario.textContent =
+      `${usuario.nombre} ${usuario.apellido ?? ""}`.trim();
+}
 
 // EVENTO CERRAR SESIÓN
 
@@ -102,11 +116,22 @@ const mostrarDetallePedido = (pedido: IPedido): void => {
         producto => producto.id === detalle.idProducto
     );
 
+    const precioUnitario = detalle.cantidad > 0
+        ? detalle.subtotal / detalle.cantidad
+        : 0;
+
     return `
-      <li>
-        ${producto?.nombre || "Producto no encontrado"} —
-        Cantidad: ${detalle.cantidad} —
-        Subtotal: $${detalle.subtotal}
+      <li class="pedido-producto">
+        <div class="pedido-producto-info">
+          <strong>${producto?.nombre || "Producto no encontrado"}</strong>
+          <span>
+            Cantidad: ${detalle.cantidad} × $${precioUnitario.toFixed(2)}
+          </span>
+        </div>
+
+        <strong class="pedido-producto-subtotal">
+          $${detalle.subtotal.toFixed(2)}
+        </strong>
       </li>
     `;
   }).join("");
@@ -121,29 +146,49 @@ const mostrarDetallePedido = (pedido: IPedido): void => {
   `).join("");
 
   detallePedidoAdmin.innerHTML = `
-    <h3>Pedido #${pedido.id}</h3>
-    <p>Cliente: ${obtenerNombreCliente(pedido)}</p>
-    <p>Fecha: ${new Date(pedido.fecha).toLocaleString("es-AR")}</p>
-    <p class="estado-pedido estado-${pedido.estado}">
-      Estado: ${pedido.estado}
-    </p>
-    <p>Forma de pago: ${pedido.formaPago}</p>
-    <p>Teléfono: ${pedido.telefono || cliente?.celular || "Sin informar"}</p>
+    <h3>Detalle del pedido #${pedido.id}</h3>
 
-    <h4>Productos</h4>
-    <ul>${detallesHtml}</ul>
+    <div class="pedido-datos-cliente">
+      <p><strong>Cliente:</strong> ${obtenerNombreCliente(pedido)}</p>
+      <p><strong>Fecha:</strong> $new Date(pedido.fecha).toLocaleString("es-AR")}</p>
+      <p><strong>Teléfono:</strong> ${pedido.telefono || cliente?.celular || "Sin informar"}</p>
+      <p><strong>Método de pago:</strong> ${pedido.formaPago}</p>
+      <span class="estado-pedido estado-${pedido.estado}">
+        ${pedido.estado}
+      </span>
+    </div>
 
-    <p>Subtotal: $${subtotal}</p>
-    <p>Envío: $${envio}</p>
-    <p><strong>Total: $${pedido.total}</strong></p>
+    <section class="pedido-seccion-productos">
+      <h4>Productos</h4>
+      <ul class="pedido-lista-productos">
+        ${detallesHtml}
+      </ul>
+    </section>
 
-    <label for="estadoDetallePedido">Cambiar estado</label>
-    <select id="estadoDetallePedido" class="selectEstadoPedido">
-      ${opcionesEstado}
-    </select>
+    <div class="pedido-resumen-totales">
+      <p>
+        <span>Subtotal:</span>
+        <span>$${subtotal.toFixed(2)}</span>
+      </p>
+      <p>
+        <span>Envío:</span>
+        <span>$${envio.toFixed(2)}</span>
+      </p>
+      <p class="pedido-total">
+        <strong>Total:</strong>
+        <strong>$${pedido.total.toFixed(2)}</strong>
+      </p>
+    </div>
+
+    <div class="pedido-cambiar-estado">
+      <label for="estadoDetallePedido">Cambiar estado:</label>
+      <select id="estadoDetallePedido" class="selectEstadoPedido">
+        ${opcionesEstado}
+      </select>
+    </div>
 
     <button type="button" id="guardarEstadoPedido">
-      Guardar estado
+      Actualizar estado
     </button>
   `;
 
@@ -227,7 +272,11 @@ const mostrarPedidos = (): void => {
       </button>
     `;
 
-    tarjeta.addEventListener("click", () => {
+    const botonVerDetalle = tarjeta.querySelector(
+        ".botonVerDetallePedido"
+    ) as HTMLButtonElement;
+
+    botonVerDetalle.addEventListener("click", () => {
       mostrarDetallePedido(pedido);
     });
 

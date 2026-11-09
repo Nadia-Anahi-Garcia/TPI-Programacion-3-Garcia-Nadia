@@ -12,7 +12,13 @@ const productosActivos = document.getElementById("productosActivos") as HTMLSpan
 const productosInactivos = document.getElementById("productosInactivos") as HTMLSpanElement;
 const pedidosPorEstado = document.getElementById("pedidosPorEstado") as HTMLUListElement;
 const mensajeDashboard = document.getElementById("mensajeDashboard") as HTMLParagraphElement;
+const categoriasActivasResumen = document.getElementById(
+    "categoriasActivasResumen"
+) as HTMLSpanElement;
 
+const categoriasInactivasResumen = document.getElementById(
+    "categoriasInactivasResumen"
+) as HTMLSpanElement;
 // EVENTO DE CIERRE DE SESIÓN
 buttonLogout?.addEventListener("click", () => {
   logout();
@@ -53,6 +59,8 @@ const cargarDashboard = async (): Promise<void> => {
     });
 
     totalCategorias.textContent = categoriasActivas.length.toString();
+    categoriasActivasResumen.textContent =categoriasActivas.length.toString();
+    categoriasInactivasResumen.textContent =(categorias.length - categoriasActivas.length).toString();
     totalProductos.textContent = productosActivosLista.length.toString();
     totalPedidos.textContent = pedidos.length.toString();
     productosDisponibles.textContent =

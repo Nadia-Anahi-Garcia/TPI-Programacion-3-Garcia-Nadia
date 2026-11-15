@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group = 'com.tp.jpa'
@@ -27,4 +28,17 @@ tasks.withType(JavaCompile) {
 
 test {
     useJUnitPlatform()
+}
+application {
+    mainClass = 'com.tp.jpa.Main'
+}
+
+tasks.named('run', JavaExec) {
+    standardInput = System.in
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }

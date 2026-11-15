@@ -1,8 +1,8 @@
 package com.tp.jpa;
 
-import com.tp.jpa.model.Categoria;
-import com.tp.jpa.model.Producto;
-import com.tp.jpa.model.Usuario;
+import com.tp.jpa.model.*;
+import com.tp.jpa.model.enums.Estado;
+import com.tp.jpa.model.enums.FormaPago;
 import com.tp.jpa.model.enums.Rol;
 import com.tp.jpa.repository.CategoriaRepository;
 import com.tp.jpa.repository.ProductoRepository;
@@ -10,9 +10,7 @@ import com.tp.jpa.repository.UsuarioRepository;
 import com.tp.jpa.util.JPAUtil;
 import com.tp.jpa.repository.PedidoRepository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     // ==================== MENÚ PRINCIPAL ====================
@@ -65,7 +63,7 @@ public class Main {
                             break;
                         case "5":
                             System.out.println("====== Submenú: Reportes ======");
-                            menuReportes(scanner, categoriaRepo);
+                            menuReportes(scanner, categoriaRepo, usuarioRepo, pedidoRepo);
                             break;
                         case "0":
                             System.out.println("Saliendo de la aplicación...");
@@ -241,8 +239,8 @@ public class Main {
     }
 
     // ------------------------------------------------------------------
-// SUBMENÚ DE PEDIDOS
-// ------------------------------------------------------------------
+    // SUBMENÚ DE PEDIDOS
+    // ------------------------------------------------------------------
 
     private static void menuPedidos(
             Scanner scanner,
@@ -303,22 +301,41 @@ public class Main {
     // SUBMENÚ DE REPORTES
     // ------------------------------------------------------------------
 
-    private static void menuReportes(Scanner scanner, CategoriaRepository categoriaRepo) {
+    private static void menuReportes(
+            Scanner scanner,
+            CategoriaRepository categoriaRepo,
+            UsuarioRepository usuarioRepo,
+            PedidoRepository pedidoRepo) {
+
         String opcion;
+
         do {
-            System.out.println("\n--- REPORTES ---");
+            System.out.println("\n===== REPORTES =====");
             System.out.println("1. Productos por categoría");
+            System.out.println("2. Pedidos por usuario");
+            System.out.println("3. Pedidos por estado");
+            System.out.println("4. Total facturado");
             System.out.println("0. Volver");
+
             System.out.print("Seleccione una opción: ");
             opcion = scanner.nextLine().trim();
 
             try {
                 switch (opcion) {
                     case "1":
-                        System.out.println("\n----- Productos por categoría -----");
                         reporteProductosPorCategoria(scanner, categoriaRepo);
                         break;
+                    case "2":
+                        reportePedidosPorUsuario(scanner, usuarioRepo);
+                        break;
+                    case "3":
+                        reportePedidosPorEstado(scanner, pedidoRepo);
+                        break;
+                    case "4":
+                        reporteTotalFacturado(pedidoRepo);
+                        break;
                     case "0":
+                        System.out.println("Volviendo al menú principal...");
                         break;
                     default:
                         System.out.println("Opción inválida.");
@@ -327,6 +344,7 @@ public class Main {
             } catch (RuntimeException e) {
                 System.out.println("Error: " + e.getMessage());
             }
+
         } while (!opcion.equals("0"));
     }
     // ------------------------------------------------------------------
@@ -974,6 +992,288 @@ public class Main {
     // ABM DE PEDIDOS
     // ------------------------------------------------------------------
 
+    private static void altaPedido(Scanner scanner,UsuarioRepository usuarioRepo,ProductoRepository productoRepo,
+            PedidoRepository pedidoRepo) {
+
+        // Seleccionar un usuario activo.
+        List<Usuario> usuarios = listarUsuarios(usuarioRepo);
+
+        if (usuarios.isEmpty()) {
+            return;
+        }
+
+        Long idUsuario = leerId(scanner, "Ingrese el ID del usuario: ");
+
+        if (idUsuario == null) {
+            return;
+        }
+
+        Optional<Usuario> resultadoUsuario = usuarioRepo.buscarPorId(idUsuario);
+
+        if (resultadoUsuario.isEmpty() || resultadoUsuario.get().isEliminado()) {
+            System.out.println("Error. El usuario no existe o está dado de baja.");
+            return;
+        }
+
+        Usuario usuario = resultadoUsuario.get();
+
+        // Seleccionar la forma de pago.
+        System.out.println("----- Seleccione la forma de pago:");
+        System.out.println("1. TARJETA");
+        System.out.println("2. TRANSFERENCIA");
+        System.out.println("3. EFECTIVO");
+        System.out.print("Opción: ");
+
+        String opcionPago = scanner.nextLine().trim();
+        FormaPago formaPago;
+
+        switch (opcionPago) {
+            case "1":
+                formaPago = FormaPago.TARJETA;
+                break;
+            case "2":
+                formaPago = FormaPago.TRANSFERENCIA;
+                break;
+            case "3":
+                formaPago = FormaPago.EFECTIVO;
+                break;
+            default:
+                System.out.println("Error. La forma de pago no es válida.");
+                return;
+        }
+
+
+        Map<Long, Integer> items = new LinkedHashMap<>();
+
+        while (true) {
+            List<Producto> productos = listarProductosDisponibles(productoRepo);
+
+            if (productos.isEmpty()) {
+                return;
+            }
+
+            System.out.print("Ingrese el ID del producto (0 para finalizar): ");
+            String textoId = scanner.nextLine().trim();
+
+            if (textoId.equals("0")) {
+                break;
+            }
+
+            Long idProducto;
+
+            try {
+                idProducto = Long.parseLong(textoId);
+            } catch (NumberFormatException e) {
+                System.out.println("Error. Ingrese un ID numérico válido.");
+                continue;
+            }
+
+            // Buscar el producto dentro del catálogo disponible.
+            Optional<Producto> resultadoProducto = productos.stream()
+                    .filter(producto -> producto.getId().equals(idProducto))
+                    .findFirst();
+
+            if (resultadoProducto.isEmpty()) {
+                System.out.println("Error. Seleccione un producto del catálogo mostrado.");
+                continue;
+            }
+
+            Producto producto = resultadoProducto.get();
+
+            System.out.print("Ingrese la cantidad: ");
+            int cantidad;
+
+            try {
+                cantidad = Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Error. La cantidad debe ser un número entero.");
+                continue;
+            }
+
+            if (cantidad <= 0) {
+                System.out.println("Error. La cantidad debe ser mayor a cero.");
+                continue;
+            }
+
+            int cantidadAnterior = items.getOrDefault(idProducto, 0);
+            int stockRestante = Math.max(0, producto.getStock() - cantidadAnterior);
+
+            if (cantidad > stockRestante) {
+                System.out.println(
+                        "Error: stock insuficiente. Puede agregar "
+                                + stockRestante + " unidad(es) más."
+                );
+                continue;
+            }
+
+            items.put(idProducto, cantidadAnterior + cantidad);
+
+            System.out.println(
+                    "Producto agregado: " + producto.getNombre()
+                            + " | Cantidad acumulada: " + items.get(idProducto)
+            );
+
+            String respuesta;
+
+            do {
+                System.out.print("¿Desea agregar otro producto? (S/N): ");
+                respuesta = scanner.nextLine().trim();
+
+                if (!respuesta.equalsIgnoreCase("S")
+                        && !respuesta.equalsIgnoreCase("N")) {
+                    System.out.println("Error: debe ingresar S o N.");
+                }
+
+            } while (!respuesta.equalsIgnoreCase("S")
+                    && !respuesta.equalsIgnoreCase("N"));
+
+            if (respuesta.equalsIgnoreCase("N")) {
+                break;
+            }
+        }
+
+        if (items.isEmpty()) {
+            System.out.println("Error. El pedido debe contener al menos un producto.");
+            return;
+        }
+
+        // Guardar
+        Pedido pedido = pedidoRepo.crearPedido(idUsuario, formaPago, items);
+
+        System.out.println("\n===== PEDIDO CREADO =====");
+        System.out.println("ID: " + pedido.getId());
+        System.out.println("Fecha: " + pedido.getFecha());
+        System.out.println(
+                "Usuario: " + usuario.getNombre() + " " + usuario.getApellido()
+        );
+        System.out.println("Estado: " + pedido.getEstado());
+        System.out.println("Forma de pago: " + pedido.getFormaPago());
+        System.out.println("Productos:");
+
+        for (DetallePedido detalle : pedido.getDetallesPedido()) {
+            System.out.printf(
+                    Locale.US,
+                    "%s | Cantidad: %d | Subtotal: $%.2f%n",
+                    detalle.getProducto().getNombre(),
+                    detalle.getCantidad(),
+                    detalle.getSubtotal()
+            );
+        }
+
+        System.out.printf(Locale.US, "Total: $%.2f%n", pedido.getTotal());
+    }
+
+    private static void cambiarEstadoPedido(Scanner scanner, PedidoRepository pedidoRepo) {
+
+        Long id = leerId(scanner, "Ingrese el ID del pedido: ");
+
+        if (id == null) {
+            return;
+        }
+
+        Optional<Pedido> resultado = pedidoRepo.buscarPorId(id);
+
+        if (resultado.isEmpty() || resultado.get().isEliminado()) {
+            System.out.println("Error. El pedido no existe o está dado de baja.");
+            return;
+        }
+
+        Pedido pedido = resultado.get();
+
+        System.out.println("Estado actual: " + pedido.getEstado());
+
+        Estado nuevoEstado = seleccionarEstado(scanner);
+
+        if (nuevoEstado == null) {
+            return;
+        }
+
+        pedido.setEstado(nuevoEstado);
+
+        Pedido pedidoGuardado = pedidoRepo.guardar(pedido);
+
+        System.out.println(
+                "Pedido ID: " + pedidoGuardado.getId()
+                        + " | Nuevo estado: " + pedidoGuardado.getEstado()
+        );
+    }
+    private static void bajaPedido(Scanner scanner, PedidoRepository pedidoRepo) {
+
+        Long id = leerId(scanner, "Ingrese el ID del pedido: ");
+
+        if (id == null) {
+            return;
+        }
+
+        Optional<Pedido> resultado = pedidoRepo.buscarPorId(id);
+
+        boolean eliminado = pedidoRepo.eliminarLogico(id);
+
+        if (eliminado && resultado.isPresent()) {
+            Pedido pedido = resultado.get();
+
+            System.out.printf(
+                    Locale.US,
+                    "Pedido dado de baja. ID: %d | Total: $%.2f%n",
+                    pedido.getId(),
+                    pedido.getTotal()
+            );
+
+        } else {
+            System.out.println(
+                    "Error. El pedido no existe o ya está dado de baja."
+            );
+        }
+    }
+    private static void listarPedidos(PedidoRepository pedidoRepo) {
+        List<Pedido> pedidos = pedidoRepo.listarActivos();
+
+        if (pedidos.isEmpty()) {
+            System.out.println("No hay pedidos activos.");
+            return;
+        }
+
+        System.out.println("\n----- Pedidos activos -----");
+
+        for (Pedido pedido : pedidos) {
+            System.out.printf(
+                    Locale.US,
+                    "ID: %d | Fecha: %s | Estado: %s | Forma de pago: %s | Total: $%.2f%n",
+                    pedido.getId(),
+                    pedido.getFecha(),
+                    pedido.getEstado(),
+                    pedido.getFormaPago(),
+                    pedido.getTotal()
+            );
+        }
+    }
+
+
+
+    private static List<Producto> listarProductosDisponibles(ProductoRepository productoRepo) {
+
+        List<Producto> productos = productoRepo.listarActivos()
+                .stream()
+                .filter(producto -> Boolean.TRUE.equals(producto.getDisponible()))
+                .filter(producto -> producto.getStock() > 0)
+                .toList();
+
+        if (productos.isEmpty()) {
+            System.out.println("No hay productos disponibles con stock.");
+            return productos;
+        }
+
+        System.out.println("\n------- Productos disponibles -------");
+
+        for (Producto producto : productos) {
+            mostrarProducto(producto);
+        }
+
+        return productos;
+    }
+
+
+
 
     // ------------------------------------------------------------------
     // Reportes
@@ -1023,6 +1323,98 @@ public class Main {
             mostrarProducto(producto);
         }
     }
+
+    private static void reportePedidosPorUsuario(Scanner scanner, UsuarioRepository usuarioRepo) {
+
+        List<Usuario> usuarios = listarUsuarios(usuarioRepo);
+
+        if (usuarios.isEmpty()) {
+            return;
+        }
+
+        Long idUsuario = leerId(scanner, "Ingrese el ID del usuario: ");
+
+        if (idUsuario == null) {
+            return;
+        }
+
+        Optional<Usuario> resultado = usuarioRepo.buscarPorId(idUsuario);
+
+        if (resultado.isEmpty() || resultado.get().isEliminado()) {
+            System.out.println("Error. El usuario no existe o está dado de baja.");
+            return;
+        }
+
+        Usuario usuario = resultado.get();
+
+        System.out.println(
+                "\n----- Pedidos de " + usuario.getNombre()
+                        + " " + usuario.getApellido() + " -----"
+        );
+
+        List<Pedido> pedidos = usuarioRepo.buscarPedidosPorUsuario(idUsuario);
+
+        if (pedidos.isEmpty()) {
+            System.out.println("El usuario no tiene pedidos activos.");
+            return;
+        }
+
+        for (Pedido pedido : pedidos) {
+            System.out.printf(
+                    Locale.US,
+                    "ID: %d | Fecha: %s | Estado: %s | Forma de pago: %s | Total: $%.2f%n",
+                    pedido.getId(),
+                    pedido.getFecha(),
+                    pedido.getEstado(),
+                    pedido.getFormaPago(),
+                    pedido.getTotal()
+            );
+        }
+    }
+
+    private static void reportePedidosPorEstado(Scanner scanner, PedidoRepository pedidoRepo) {
+
+        Estado estado = seleccionarEstado(scanner);
+
+        if (estado == null) {
+            return;
+        }
+
+        List<Pedido> pedidos = pedidoRepo.buscarPorEstado(estado);
+
+        if (pedidos.isEmpty()) {
+            System.out.println(
+                    "No hay pedidos activos con estado " + estado + "."
+            );
+            return;
+        }
+
+        System.out.println("\n----- Pedidos con estado " + estado + " -----");
+
+        for (Pedido pedido : pedidos) {
+            System.out.printf(
+                    Locale.US,
+                    "ID: %d | Fecha: %s | Forma de pago: %s | Total: $%.2f%n",
+                    pedido.getId(),
+                    pedido.getFecha(),
+                    pedido.getFormaPago(),
+                    pedido.getTotal()
+            );
+        }
+    }
+    private static void reporteTotalFacturado(PedidoRepository pedidoRepo) {
+
+        double total = pedidoRepo.buscarPorEstado(Estado.TERMINADO)
+                .stream()
+                .mapToDouble(pedido ->
+                        pedido.getTotal() == null ? 0.0 : pedido.getTotal()
+                )
+                .sum();
+
+        System.out.printf(Locale.US, "Total facturado: $%.2f%n", total);
+    }
+
+
 
 
 
@@ -1108,6 +1500,33 @@ public class Main {
                         + " | Stock: " + producto.getStock()
         );
     }
+
+    private static Estado seleccionarEstado(Scanner scanner) {
+        System.out.println("Seleccione el estado:");
+        System.out.println("1. PENDIENTE");
+        System.out.println("2. CONFIRMADO");
+        System.out.println("3. TERMINADO");
+        System.out.println("4. CANCELADO");
+        System.out.print("Opción: ");
+
+        String opcion = scanner.nextLine().trim();
+
+        switch (opcion) {
+            case "1":
+                return Estado.PENDIENTE;
+            case "2":
+                return Estado.CONFIRMADO;
+            case "3":
+                return Estado.TERMINADO;
+            case "4":
+                return Estado.CANCELADO;
+            default:
+                System.out.println("Error: el estado seleccionado no es válido.");
+                return null;
+        }
+    }
+
+
 }
 
 

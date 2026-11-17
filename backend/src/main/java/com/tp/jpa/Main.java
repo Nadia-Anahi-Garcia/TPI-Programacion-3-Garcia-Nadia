@@ -50,39 +50,39 @@ public class Main {
                             menuCategorias(scanner, categoriaRepo);
                             break;
                         case "2":
-                            System.out.println("====== Submenú: Productos ======");
+                            System.out.println("\n====== Submenú: Productos ======");
                             menuProductos(scanner, categoriaRepo, productoRepo);
                             break;
                         case "3":
-                            System.out.println("====== Submenú: Usuarios ======");
-                            menuUsuarios(scanner,  usuarioRepo);
+                            System.out.println("\n====== Submenú: Usuarios ======");
+                            menuUsuarios(scanner, usuarioRepo);
                             break;
                         case "4":
-                            System.out.println("====== Submenú: Pedidos ======");
+                            System.out.println("\n====== Submenú: Pedidos ======");
                             menuPedidos(scanner, usuarioRepo, productoRepo, pedidoRepo);
                             break;
                         case "5":
-                            System.out.println("====== Submenú: Reportes ======");
+                            System.out.println("\n====== Submenú: Reportes ======");
                             menuReportes(scanner, categoriaRepo, usuarioRepo, pedidoRepo);
                             break;
                         case "0":
-                            System.out.println("Saliendo de la aplicación...");
+                            System.out.println("\nSaliendo de la aplicación...");
                             break;
                         default:
-                            System.out.println("Opción inválida, por favor marque la opción correcta.");
+                            mostrarAviso("Opción inválida. Seleccione una opción del menú.");
                             break;
                     }
-                }catch (RuntimeException e) {
-                    System.out.println(
-                            "La operación no se pudo completar : " + e.getMessage()
+                } catch (RuntimeException e) {
+                    mostrarAviso(
+                            "La operación no se pudo completar. " + e.getMessage()
                     );
                 }
 
             } while (!opcion.equals("0"));
 
-        }catch (java.util.NoSuchElementException e) {
+        } catch (java.util.NoSuchElementException e) {
             System.out.println("\nFin de la entrada. Saliendo...");
-        }finally {
+        } finally {
             scanner.close();
             JPAUtil.close();
         }
@@ -95,43 +95,43 @@ public class Main {
     public static void menuCategorias(Scanner scanner, CategoriaRepository categoriaRepo) {
         String opcion;
         do {
-            System.out.println("\n--- GESTIÓN DE CATEGORÍAS ---");
+            System.out.println("\n===== GESTIÓN DE CATEGORÍAS =====");
             System.out.println("1. Alta");
             System.out.println("2. Modificar");
             System.out.println("3. Baja lógica");
             System.out.println("4. Listado");
             System.out.println("0. Volver");
 
-            System.out.print("Seleccione una opción: ");
+            System.out.print("\nSeleccione una opción: ");
             opcion = scanner.nextLine().trim();
 
             try {
                 switch (opcion) {
                     case "1":
-                        System.out.println("----- Alta de categoría -----");
+                        System.out.println("\n----- Alta de categoría -----\n");
                         altaCategoria(scanner, categoriaRepo);
                         break;
                     case "2":
-                        System.out.println("----- Modificación de categoría -----");
+                        System.out.println("\n----- Modificación de categoría -----\n");
                         modificarCategoria(scanner, categoriaRepo);
                         break;
                     case "3":
-                        System.out.println(" ----- Baja lógica de categoría -----");
+                        System.out.println("\n----- Baja lógica de categoría -----\n");
                         bajaCategoria(scanner, categoriaRepo);
                         break;
                     case "4":
-                        System.out.println("----- Listado de categorías -----");
+                        System.out.println("\n----- Listado de categorías -----\n");
                         listarCategorias(categoriaRepo);
                         break;
                     case "0":
-                        System.out.println("Volviendo al menú principal...");
+                        System.out.println("\nVolviendo al menú principal...");
                         break;
                     default:
-                        System.out.println("Opción inválida.");
+                        mostrarAviso("Opción inválida. Seleccione una opción del menú.");
                         break;
                 }
-            }catch (RuntimeException e) {
-                System.out.println("Error: " + e.getMessage());
+            } catch (RuntimeException e) {
+                mostrarAviso(e.getMessage());
             }
         } while (!opcion.equals("0"));
 
@@ -141,9 +141,9 @@ public class Main {
     // SUBMENÚ DE PRODUCTOS
     // ------------------------------------------------------------------
 
-    private static void menuProductos( Scanner scanner, CategoriaRepository categoriaRepo,
-                                       ProductoRepository productoRepo) {
-       String opcion;
+    private static void menuProductos(Scanner scanner, CategoriaRepository categoriaRepo,
+                                      ProductoRepository productoRepo) {
+        String opcion;
 
         do {
             System.out.println("\n===== GESTIÓN DE PRODUCTOS =====");
@@ -153,35 +153,36 @@ public class Main {
             System.out.println("4. Listado");
             System.out.println("0. Volver");
 
-            System.out.print("Seleccione una opción: ");
+            System.out.print("\nSeleccione una opción: ");
             opcion = scanner.nextLine().trim();
 
             try {
                 switch (opcion) {
                     case "1":
-                        System.out.println("\n----- Alta de producto -----");
+                        System.out.println("\n----- Alta de producto -----\n");
                         altaProducto(scanner, categoriaRepo);
                         break;
                     case "2":
-                        System.out.println("\n----- Modificar producto -----");
-                        modificarProducto(scanner, productoRepo,categoriaRepo);
+                        System.out.println("\n----- Modificar producto -----\n");
+                        modificarProducto(scanner, productoRepo, categoriaRepo);
                         break;
                     case "3":
-                        System.out.println("\n----- Baja lógica de producto -----");
+                        System.out.println("\n----- Baja lógica de producto -----\n");
                         bajaProducto(scanner, productoRepo);
                         break;
                     case "4":
-                        System.out.println("\n----- Productos activos -----");
+                        System.out.println("\n----- Productos activos -----\n");
                         listarProductos(categoriaRepo);
                         break;
                     case "0":
+                        System.out.println("\nVolviendo al menú principal...");
                         break;
                     default:
-                        System.out.println("Opción inválida.");
+                        mostrarAviso("Opción inválida. Seleccione una opción del menú.");
                         break;
                 }
             } catch (RuntimeException e) {
-                System.out.println("Error: " + e.getMessage());
+                mostrarAviso(e.getMessage());
             }
         } while (!opcion.equals("0"));
     }
@@ -204,35 +205,40 @@ public class Main {
             System.out.println("5. Buscar por mail");
             System.out.println("0. Volver");
 
-            System.out.print("Seleccione una opción: ");
+            System.out.print("\nSeleccione una opción: ");
             opcion = scanner.nextLine().trim();
 
             try {
                 switch (opcion) {
                     case "1":
+                        System.out.println("\n----- Alta de usuario -----\n");
                         altaUsuario(scanner, usuarioRepo);
                         break;
                     case "2":
+                        System.out.println("\n----- Modificación de usuario -----\n");
                         modificarUsuario(scanner, usuarioRepo);
                         break;
                     case "3":
+                        System.out.println("\n----- Baja lógica de usuario -----\n");
                         bajaUsuario(scanner, usuarioRepo);
                         break;
                     case "4":
+                        System.out.println("\n----- Listado de usuarios -----\n");
                         listarUsuarios(usuarioRepo);
                         break;
                     case "5":
+                        System.out.println("\n----- Búsqueda de usuario por mail -----\n");
                         buscarUsuarioPorMail(scanner, usuarioRepo);
                         break;
                     case "0":
-                        System.out.println("Volviendo al menú principal...");
+                        System.out.println("\nVolviendo al menú principal...");
                         break;
                     default:
-                        System.out.println("Opción inválida.");
+                        mostrarAviso("Opción inválida. Seleccione una opción del menú.");
                         break;
                 }
             } catch (RuntimeException e) {
-                System.out.println("Error: " + e.getMessage());
+                mostrarAviso(e.getMessage());
             }
 
         } while (!opcion.equals("0"));
@@ -260,38 +266,44 @@ public class Main {
             System.out.println("6. Pedidos por estado");
             System.out.println("0. Volver");
 
-            System.out.print("Seleccione una opción: ");
+            System.out.print("\nSeleccione una opción: ");
             opcion = scanner.nextLine().trim();
 
             try {
                 switch (opcion) {
                     case "1":
+                        System.out.println("\n----- Alta de pedido -----\n");
                         altaPedido(scanner, usuarioRepo, productoRepo, pedidoRepo);
                         break;
                     case "2":
+                        System.out.println("\n----- Cambio de estado de pedido -----\n");
                         cambiarEstadoPedido(scanner, pedidoRepo);
                         break;
                     case "3":
+                        System.out.println("\n----- Baja lógica de pedido -----\n");
                         bajaPedido(scanner, pedidoRepo);
                         break;
                     case "4":
+                        System.out.println("\n----- Listado de pedidos -----\n");
                         listarPedidos(pedidoRepo);
                         break;
                     case "5":
+                        System.out.println("\n----- Pedidos por usuario -----\n");
                         reportePedidosPorUsuario(scanner, usuarioRepo);
                         break;
                     case "6":
+                        System.out.println("\n----- Pedidos por estado -----\n");
                         reportePedidosPorEstado(scanner, pedidoRepo);
                         break;
                     case "0":
-                        System.out.println("Volviendo al menú principal...");
+                        System.out.println("\nVolviendo al menú principal...");
                         break;
                     default:
-                        System.out.println("Opción inválida.");
+                        mostrarAviso("Opción inválida. Seleccione una opción del menú.");
                         break;
                 }
             } catch (RuntimeException e) {
-                System.out.println("Error: " + e.getMessage());
+                mostrarAviso(e.getMessage());
             }
 
         } while (!opcion.equals("0"));
@@ -317,46 +329,51 @@ public class Main {
             System.out.println("4. Total facturado");
             System.out.println("0. Volver");
 
-            System.out.print("Seleccione una opción: ");
+            System.out.print("\nSeleccione una opción: ");
             opcion = scanner.nextLine().trim();
 
             try {
                 switch (opcion) {
                     case "1":
+                        System.out.println("\n----- Productos por categoría -----\n");
                         reporteProductosPorCategoria(scanner, categoriaRepo);
                         break;
                     case "2":
+                        System.out.println("\n----- Pedidos por usuario -----\n");
                         reportePedidosPorUsuario(scanner, usuarioRepo);
                         break;
                     case "3":
+                        System.out.println("\n----- Pedidos por estado -----\n");
                         reportePedidosPorEstado(scanner, pedidoRepo);
                         break;
                     case "4":
+                        System.out.println("\n----- Total facturado -----\n");
                         reporteTotalFacturado(pedidoRepo);
                         break;
                     case "0":
-                        System.out.println("Volviendo al menú principal...");
+                        System.out.println("\nVolviendo al menú principal...");
                         break;
                     default:
-                        System.out.println("Opción inválida.");
+                        mostrarAviso("Opción inválida. Seleccione una opción del menú.");
                         break;
                 }
             } catch (RuntimeException e) {
-                System.out.println("Error: " + e.getMessage());
+                mostrarAviso(e.getMessage());
             }
 
         } while (!opcion.equals("0"));
     }
+
     // ------------------------------------------------------------------
     // ABM de Categorías
     // ------------------------------------------------------------------
-    private static void altaCategoria( Scanner scanner, CategoriaRepository categoriaRepo) {
+    private static void altaCategoria(Scanner scanner, CategoriaRepository categoriaRepo) {
 
-        System.out.print("\n Ingrese el nombre de la categoría: ");
+        System.out.print("\nIngrese el nombre de la categoría: ");
         String nombre = scanner.nextLine().trim();
 
         if (nombre.isEmpty()) {
-            System.out.println("Error, el nombre no puede estar vacío.");
+            mostrarAviso("El nombre no puede estar vacío.");
             return;
         }
         System.out.print("\n Descripción (opcional): ");
@@ -368,11 +385,13 @@ public class Main {
 
         try {
             Categoria categoriaGuardada = categoriaRepo.guardar(categoria);
-            System.out.println(
-                "La categoría ha sido creada. ID: " + categoriaGuardada.getId()
-            );
+            System.out.println("\n--------------------------------------------------");
+            System.out.println("CATEGORÍA CREADA CORRECTAMENTE");
+            System.out.println("--------------------------------------------------");
+            System.out.println("ID: " + categoriaGuardada.getId());
+            System.out.println("--------------------------------------------------\n");
         } catch (RuntimeException e) {
-            System.out.println("Error al guardar la categoría: " + e.getMessage());
+            mostrarAviso("No se pudo guardar la categoría. " + e.getMessage());
         }
     }
 
@@ -383,7 +402,7 @@ public class Main {
             return;
         }
 
-        Long id = leerId(scanner, "Ingrese el ID de la categoría a modificar: ");
+        Long id = leerId(scanner, "\nIngrese el ID de la categoría a modificar: ");
 
         if (id == null) {
             return;
@@ -392,25 +411,29 @@ public class Main {
         Optional<Categoria> resultado = categoriaRepo.buscarPorId(id);
 
         if (resultado.isEmpty()) {
-            System.out.println("La categoría no existe.");
+            mostrarAviso("La categoría no existe.");
             return;
         }
 
         Categoria categoria = resultado.get();
 
         if (categoria.isEliminado()) {
-            System.out.println("La categoría está dada de baja.");
+            mostrarAviso("La categoría está dada de baja.");
             return;
         }
 
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("CATEGORIA A MODIFICAR - ID: " + categoria.getId());
+        System.out.println("--------------------------------------------------");
+
         System.out.println("Nombre actual: " + categoria.getNombre());
         System.out.println("Descripción actual: " + categoria.getDescripcion());
-        System.out.println("Deje el campo vacío para conservar su valor.");
+        System.out.println("\nDeje el campo vacío para conservar su valor.");
 
-        System.out.print("Ingrese nuevo nombre: ");
+        System.out.print("\nIngrese nuevo nombre: ");
         String nuevoNombre = scanner.nextLine().trim();
 
-        System.out.print("Ingrese la nueva descripción: ");
+        System.out.print("\nIngrese la nueva descripción: ");
         String nuevaDescripcion = scanner.nextLine().trim();
 
         if (!nuevoNombre.isEmpty()) {
@@ -423,14 +446,19 @@ public class Main {
 
         Categoria categoriaGuardada = categoriaRepo.guardar(categoria);
 
-        System.out.println(
-                "Categoría modificada: " + categoriaGuardada.getNombre()
-        );
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("Categoría modificada: " + categoriaGuardada.getNombre());
+        System.out.println("--------------------------------------------------");
     }
 
     private static void bajaCategoria(Scanner scanner, CategoriaRepository categoriaRepo) {
 
-        Long id = leerId(scanner, "Ingrese el ID de la categoría: ");
+        List<Categoria> categorias = listarCategorias(categoriaRepo);
+
+        if (categorias.isEmpty()) {
+            return;
+        }
+        Long id = leerId(scanner, "\nIngrese el ID de la categoría: ");
 
         if (id == null) {
             return;
@@ -439,14 +467,14 @@ public class Main {
         Optional<Categoria> resultado = categoriaRepo.buscarPorId(id);
 
         if (resultado.isEmpty()) {
-            System.out.println("La categoría no existe.");
+            mostrarAviso("La categoría no existe.");
             return;
         }
 
         Categoria categoria = resultado.get();
 
         if (categoria.isEliminado()) {
-            System.out.println("La categoría ya está dada de baja.");
+            mostrarAviso("La categoría ya está dada de baja.");
             return;
         }
 
@@ -454,10 +482,10 @@ public class Main {
                 categoriaRepo.buscarProductosPorCategoria(id);
 
         if (!productos.isEmpty()) {
-            System.out.println(
-                    "Error: la categoría tiene " + productos.size()
-                            + " producto(s) activo(s). "
-                            + "Primero debe dar de baja sus productos."
+            mostrarAviso(
+                    "\nNo se puede dar de baja la categoría: tiene "
+                            + productos.size() + " producto(s) activo(s)."
+                            + "\nPrimero debe dar de baja sus productos."
             );
             return;
         }
@@ -465,13 +493,11 @@ public class Main {
         boolean eliminada = categoriaRepo.eliminarLogico(id);
 
         if (eliminada) {
-            System.out.println(
-                    "Categoría dada de baja: " + categoria.getNombre()
-            );
+            System.out.println("\n--------------------------------------------------");
+            System.out.println("Categoría dada de baja: " + categoria.getNombre());
+            System.out.println("--------------------------------------------------");
         } else {
-            System.out.println(
-                    "Error: la categoría no existe o ya está dada de baja."
-            );
+            mostrarAviso("La categoría no existe o ya está dada de baja.");
         }
     }
 
@@ -480,17 +506,18 @@ public class Main {
         List<Categoria> categorias = categoriaRepo.listarActivos();
 
         if (categorias.isEmpty()) {
-            System.out.println("No hay categorías activas.");
+            mostrarAviso("No hay categorías activas.");
             return categorias;
         }
 
-        System.out.println("\n----- Categorías activas -----");
+        System.out.println("\n----- Categorías activas -----\n");
 
         for (Categoria categoria : categorias) {
-            System.out.println(
-                    "ID: " + categoria.getId()
-                            + " | Nombre: " + categoria.getNombre()
-                            + " | Descripción: " + categoria.getDescripcion()
+            System.out.printf(
+                    "ID: %d | Nombre: %s | Descripción: %s%n",
+                    categoria.getId(),
+                    categoria.getNombre(),
+                    categoria.getDescripcion()
             );
         }
 
@@ -506,11 +533,11 @@ public class Main {
         List<Categoria> categorias = listarCategorias(categoriaRepo);
 
         if (categorias.isEmpty()) {
-            System.out.println("Primero debe crear una categoría.");
+            mostrarAviso("Primero debe crear una categoría.");
             return;
         }
 
-        Long categoriaId = leerId(scanner, "Ingrese el ID de la categoría: ");
+        Long categoriaId = leerId(scanner, "\nIngrese el ID de la categoría: ");
 
         if (categoriaId == null) {
             return;
@@ -520,14 +547,14 @@ public class Main {
                 categoriaRepo.buscarPorId(categoriaId);
 
         if (resultado.isEmpty()) {
-            System.out.println("Error, la categoría no existe.");
+            mostrarAviso("La categoría no existe.");
             return;
         }
 
         Categoria categoria = resultado.get();
 
         if (categoria.isEliminado()) {
-            System.out.println("Error, la categoría está dada de baja.");
+            mostrarAviso("La categoría está dada de baja.");
             return;
         }
 
@@ -535,20 +562,20 @@ public class Main {
         String nombre = scanner.nextLine().trim();
 
         if (nombre.isEmpty()) {
-            System.out.println("Error, el nombre no puede estar vacío.");
+            mostrarAviso("El nombre no puede estar vacío.");
             return;
         }
 
         System.out.print("Descripción: ");
         String descripcion = scanner.nextLine().trim();
 
-        Double precio = leerPrecio(scanner, "Ingrese el precio (mayor a 0): ");
+        Double precio = leerPrecio(scanner, "\nIngrese el precio (mayor a 0): ");
 
         if (precio == null) {
             return;
         }
 
-        Integer stock = leerStock(scanner, "Ingrese el Stock (mayor o igual a 0): ");
+        Integer stock = leerStock(scanner, "\nIngrese el Stock (mayor o igual a 0): ");
 
         if (stock == null) {
             return;
@@ -564,7 +591,7 @@ public class Main {
                 && !respuesta.equalsIgnoreCase("S")
                 && !respuesta.equalsIgnoreCase("N")) {
 
-            System.out.println("Error, debe ingresar S o N.");
+            mostrarAviso("Debe ingresar S o N.");
             return;
         }
 
@@ -583,23 +610,25 @@ public class Main {
             Producto productoGuardado =
                     categoriaRepo.agregarProducto(categoriaId, producto);
 
-            System.out.println(
-                    "Producto creado. ID: " + productoGuardado.getId()
-                            + " | Categoría: " + categoria.getNombre()
-            );
+            System.out.println("\n--------------------------------------------------");
+            System.out.println("PRODUCTO CREADO CORRECTAMENTE");
+            System.out.println("--------------------------------------------------");
+            System.out.println("ID: " + productoGuardado.getId());
+            System.out.println("Categoría: " + categoria.getNombre());
+            System.out.println("--------------------------------------------------\n");
         } catch (IllegalArgumentException e) {
             // Si la categoría no existe, está dada de baja o ya tiene un producto con ese nombre.
             // Lanza el error.
-            System.out.println("Error: " + e.getMessage());
+            mostrarAviso(e.getMessage());
         }
     }
 
-    private static void modificarProducto(Scanner scanner, ProductoRepository productoRepo,CategoriaRepository categoriaRepo) {
+    private static void modificarProducto(Scanner scanner, ProductoRepository productoRepo, CategoriaRepository categoriaRepo) {
 
         List<Producto> productos = productoRepo.listarActivos();
 
         if (productos.isEmpty()) {
-            System.out.println("No hay productos activos.");
+            mostrarAviso("No hay productos activos.");
             return;
         }
 
@@ -607,7 +636,7 @@ public class Main {
             mostrarProducto(producto);
         }
 
-        Long id = leerId(scanner, " Ingrese el ID del producto a modificar: ");
+        Long id = leerId(scanner, " \nIngrese el ID del producto a modificar: ");
 
         if (id == null) {
             return;
@@ -616,29 +645,31 @@ public class Main {
         Optional<Producto> resultado = productoRepo.buscarPorId(id);
 
         if (resultado.isEmpty()) {
-            System.out.println("Error, el producto no existe.");
+            mostrarAviso("El producto no existe.");
             return;
         }
 
         Producto producto = resultado.get();
 
         if (producto.isEliminado()) {
-            System.out.println("Error, el producto está dado de baja.");
+            mostrarAviso("El producto está dado de baja.");
             return;
         }
 
+        System.out.println("\n--------------------------------------------------");
         System.out.println("Nombre actual: " + producto.getNombre());
         System.out.println("Precio actual: " + producto.getPrecio());
         System.out.println("Stock actual: " + producto.getStock());
-        System.out.println("Deje el campo vacío para conservar su valor.");
+        System.out.println("\nDeje el campo vacío para conservar su valor.");
+        System.out.println("\n--------------------------------------------------");
 
-        System.out.print("Ingrese el nuevo nombre: ");
+        System.out.print("\nIngrese el nuevo nombre: ");
         String nuevoNombre = scanner.nextLine().trim();
 
-        System.out.print("Ingrese el nuevo precio: ");
+        System.out.print("\nIngrese el nuevo precio: ");
         String textoPrecio = scanner.nextLine().trim();
 
-        System.out.print("Ingrese el nuevo stock: ");
+        System.out.print("\nIngrese el nuevo stock: ");
         String textoStock = scanner.nextLine().trim();
 
         Double nuevoPrecio = producto.getPrecio();
@@ -650,12 +681,12 @@ public class Main {
                 nuevoPrecio = Double.parseDouble(textoPrecio);
 
                 if (!Double.isFinite(nuevoPrecio) || nuevoPrecio <= 0) {
-                    System.out.println("Error, el precio debe ser mayor a 0.");
+                    mostrarAviso("El precio debe ser mayor a 0.");
                     return;
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Error, el precio debe ser numérico (usar un punto para los decimales).");
+                mostrarAviso("El precio debe ser numérico. Use un punto para los decimales.");
                 return;
             }
         }
@@ -665,12 +696,12 @@ public class Main {
                 nuevoStock = Integer.parseInt(textoStock);
 
                 if (nuevoStock < 0) {
-                    System.out.println("Error, el stock no puede ser negativo.");
+                    mostrarAviso("El stock no puede ser negativo.");
                     return;
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Error, el stock debe ser un número entero.");
+                mostrarAviso("El stock debe ser un número entero.");
                 return;
             }
         }
@@ -679,7 +710,7 @@ public class Main {
             try {
                 categoriaRepo.validarNombreAlModificarProducto(producto.getId(), nuevoNombre);
             } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
+                mostrarAviso(e.getMessage());
                 return;
             }
 
@@ -691,12 +722,31 @@ public class Main {
 
         Producto productoGuardado = productoRepo.guardar(producto);
 
-        System.out.println(
-                "Producto modificado: " + productoGuardado.getNombre()
-        );
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("Producto modificado: " + productoGuardado.getNombre());
+        System.out.println("--------------------------------------------------");
     }
 
     private static void bajaProducto(Scanner scanner, ProductoRepository productoRepo) {
+        List<Producto> productos = productoRepo.listarActivos();
+
+        if (productos.isEmpty()) {
+            mostrarAviso("No hay productos activos.");
+            return;
+        }
+
+        System.out.println("\n----- Productos activos -----\n");
+
+        productos.forEach(producto ->
+                System.out.printf(
+                        "ID: %d | Nombre: %s | Stock: %d%n",
+                        producto.getId(),
+                        producto.getNombre(),
+                        producto.getStock()
+                )
+        );
+
+        System.out.println();
 
         Long id = leerId(scanner, "Ingrese el ID del producto: ");
 
@@ -710,13 +760,11 @@ public class Main {
         boolean eliminado = productoRepo.eliminarLogico(id);
 
         if (eliminado && resultado.isPresent()) {
-            System.out.println(
-                    "Producto dado de baja: " + resultado.get().getNombre()
-            );
+            System.out.println("\n--------------------------------------------------");
+            System.out.println("Producto dado de baja: " + resultado.get().getNombre());
+            System.out.println("--------------------------------------------------");
         } else {
-            System.out.println(
-                    "Error, el producto no existe o ya está dado de baja."
-            );
+            mostrarAviso("El producto no existe o ya está dado de baja.");
         }
     }
 
@@ -724,7 +772,6 @@ public class Main {
 
         List<Categoria> categorias = categoriaRepo.listarActivos();
         boolean hayProductos = false;
-
 
 
         for (Categoria categoria : categorias) {
@@ -750,9 +797,7 @@ public class Main {
         }
 
         if (!hayProductos) {
-            System.out.println(
-                    "No hay productos activos asociados a categorías activas."
-            );
+            mostrarAviso("No hay productos activos asociados a categorías activas.");
         }
     }
     // ------------------------------------------------------------------
@@ -764,7 +809,7 @@ public class Main {
         List<Usuario> usuarios = usuarioRepo.listarActivos();
 
         if (usuarios.isEmpty()) {
-            System.out.println("No hay usuarios activos.");
+            mostrarAviso("No hay usuarios activos.");
             return usuarios;
         }
 
@@ -782,39 +827,42 @@ public class Main {
 
         return usuarios;
     }
-    public static void altaUsuario ( Scanner scanner, UsuarioRepository usuarioRepo){
-        System.out.print("Ingrese el nombre: ");
+
+    public static void altaUsuario(Scanner scanner, UsuarioRepository usuarioRepo) {
+        System.out.print("\nIngrese el nombre: ");
         String nombre = scanner.nextLine().trim();
 
-        System.out.print("Ingrese el apellido: ");
+        System.out.print("\nIngrese el apellido: ");
         String apellido = scanner.nextLine().trim();
 
-        System.out.print("Ingrese el mail: ");
+        System.out.print("\nIngrese el mail: ");
         String mail = scanner.nextLine().trim();
 
         if (nombre.isEmpty() || apellido.isEmpty() || mail.isEmpty()) {
-            System.out.println("Error: nombre, apellido y mail son obligatorios.");
+            mostrarAviso("Nombre, apellido y mail son obligatorios.");
             return;
         }
         Optional<Usuario> existente = usuarioRepo.buscarPorMail(mail);
         if (existente.isPresent()) {
-            System.out.println("Error: ya existe un usuario activo con ese mail.");
+            mostrarAviso("Ya existe un usuario activo con ese mail.");
             return;
         }
-        System.out.print("Ingrese el celular (opcional): ");
+        System.out.print("\nIngrese el celular (opcional): ");
         String celular = scanner.nextLine().trim();
 
-        System.out.print("Ingrese la contraseña: ");
+        System.out.print("\nIngrese la contraseña: ");
         String contrasenia = scanner.nextLine();
         if (contrasenia.isBlank()) {
-            System.out.println("Error: la contraseña no puede estar vacía.");
+            mostrarAviso("La contraseña no puede estar vacía.");
             return;
         }
 
         System.out.println("Seleccione el rol:");
         System.out.println("1. ADMIN");
         System.out.println("2. USUARIO");
-        System.out.print("Opción: ");
+
+
+        System.out.print("\nOpción: ");
         String opcionRol = scanner.nextLine().trim();
 
         Rol rol;
@@ -827,7 +875,7 @@ public class Main {
                 rol = Rol.USUARIO;
                 break;
             default:
-                System.out.println("Error: el rol seleccionado no es válido.");
+                mostrarAviso("El rol seleccionado no es válido.");
                 return;
         }
 
@@ -841,20 +889,27 @@ public class Main {
 
         Usuario usuarioGuardado = usuarioRepo.guardar(usuario);
 
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("USUARIO CREADO CORRECTAMENTE");
+        System.out.println("--------------------------------------------------");
+        System.out.println("ID: " + usuarioGuardado.getId());
         System.out.println(
-                "Usuario creado. ID: " + usuarioGuardado.getId()
-                        + " | Nombre: " + usuarioGuardado.getNombre()
+                "Nombre: " + usuarioGuardado.getNombre()
                         + " " + usuarioGuardado.getApellido()
         );
+        System.out.println("Mail: " + usuarioGuardado.getMail());
+        System.out.println("Rol: " + usuarioGuardado.getRol());
+        System.out.println("--------------------------------------------------\n");
 
     }
-    private static void modificarUsuario ( Scanner scanner, UsuarioRepository usuarioRepo){
+
+    private static void modificarUsuario(Scanner scanner, UsuarioRepository usuarioRepo) {
         List<Usuario> usuarios = listarUsuarios(usuarioRepo);
         if (usuarios.isEmpty()) {
             return;
         }
 
-        Long id = leerId(scanner, "Ingrese el ID del usuario a modificar: ");
+        Long id = leerId(scanner, "\nIngrese el ID del usuario a modificar: ");
 
         if (id == null) {
             return;
@@ -863,35 +918,42 @@ public class Main {
         Optional<Usuario> resultado = usuarioRepo.buscarPorId(id);
 
         if (resultado.isEmpty()) {
-            System.out.println("Error: el usuario no existe.");
+            mostrarAviso("El usuario no existe.");
             return;
         }
         Usuario usuario = resultado.get();
 
         if (usuario.isEliminado()) {
-            System.out.println("Error: el usuario está dado de baja.");
+            mostrarAviso("El usuario está dado de baja.");
             return;
         }
 
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("USUARIO A MODIFICAR - ID: " + usuario.getId());
+        System.out.println("--------------------------------------------------");
         System.out.println("Nombre actual: " + usuario.getNombre());
         System.out.println("Apellido actual: " + usuario.getApellido());
         System.out.println("Mail actual: " + usuario.getMail());
         System.out.println("Celular actual: " + usuario.getCelular());
-        System.out.println("Deje los campos vacíos para conservar sus valores.");
+        System.out.println("--------------------------------------------------");
 
-        System.out.print("Ingrese el nuevo nombre: ");
+        System.out.println(
+                "\nDeje los campos vacíos para conservar sus valores.\n"
+        );
+
+        System.out.print("\nIngrese el nuevo nombre: ");
         String nuevoNombre = scanner.nextLine().trim();
 
-        System.out.print("Ingrese el nuevo apellido: ");
+        System.out.print("\nIngrese el nuevo apellido: ");
         String nuevoApellido = scanner.nextLine().trim();
 
-        System.out.print("Ingrese el nuevo mail: ");
+        System.out.print("\nIngrese el nuevo mail: ");
         String nuevoMail = scanner.nextLine().trim();
 
-        System.out.print("Ingrese el nuevo celular: ");
+        System.out.print("\nIngrese el nuevo celular: ");
         String nuevoCelular = scanner.nextLine().trim();
 
-        System.out.print("Ingrese la nueva contraseña: ");
+        System.out.print("\nIngrese la nueva contraseña: ");
         String nuevaContrasenia = scanner.nextLine();
 
         if (!nuevoMail.isEmpty()) {
@@ -900,7 +962,7 @@ public class Main {
             if (usuarioConMail.isPresent()
                     && !usuarioConMail.get().getId().equals(usuario.getId())) {
 
-                System.out.println("Error: otro usuario activo ya utiliza ese mail.");
+                mostrarAviso("Otro usuario activo ya utiliza ese mail.");
                 return;
             }
         }
@@ -927,17 +989,23 @@ public class Main {
 
         Usuario usuarioGuardado = usuarioRepo.guardar(usuario);
 
+        System.out.println("\n--------------------------------------------------");
         System.out.println(
                 "Usuario modificado: " + usuarioGuardado.getNombre()
-                        + " " + usuarioGuardado.getApellido()
-        );
-
+                        + " " + usuarioGuardado.getApellido());
+        System.out.println("--------------------------------------------------");
 
 
     }
+
     private static void bajaUsuario(Scanner scanner, UsuarioRepository usuarioRepo) {
 
-        Long id = leerId(scanner, "Ingrese el ID del usuario: ");
+        List<Usuario> usuarios = listarUsuarios(usuarioRepo);
+
+        if (usuarios.isEmpty()) {
+            return;
+        }
+        Long id = leerId(scanner, "\nIngrese el ID del usuario: ");
 
         if (id == null) {
             return;
@@ -950,30 +1018,30 @@ public class Main {
         if (eliminado && resultado.isPresent()) {
             Usuario usuario = resultado.get();
 
+            System.out.println("\n--------------------------------------------------");
             System.out.println(
                     "Usuario dado de baja: " + usuario.getNombre()
-                            + " " + usuario.getApellido()
-            );
+                            + " " + usuario.getApellido());
+            System.out.println("--------------------------------------------------");
         } else {
-            System.out.println(
-                    "Error: el usuario no existe o ya está dado de baja."
-            );
+            mostrarAviso("El usuario no existe o ya está dado de baja.");
         }
     }
+
     private static void buscarUsuarioPorMail(Scanner scanner, UsuarioRepository usuarioRepo) {
 
-        System.out.print("Ingrese el mail del usuario: ");
+        System.out.print("\nIngrese el mail del usuario: ");
         String mail = scanner.nextLine().trim();
 
         if (mail.isEmpty()) {
-            System.out.println("Error: debe ingresar un mail.");
+            mostrarAviso("Debe ingresar un mail.");
             return;
         }
 
         Optional<Usuario> resultado = usuarioRepo.buscarPorMail(mail);
 
         if (resultado.isEmpty()) {
-            System.out.println("No existe un usuario activo con ese mail.");
+            mostrarAviso("No existe un usuario activo con ese mail.");
             return;
         }
 
@@ -992,8 +1060,8 @@ public class Main {
     // ABM DE PEDIDOS
     // ------------------------------------------------------------------
 
-    private static void altaPedido(Scanner scanner,UsuarioRepository usuarioRepo,ProductoRepository productoRepo,
-            PedidoRepository pedidoRepo) {
+    private static void altaPedido(Scanner scanner, UsuarioRepository usuarioRepo, ProductoRepository productoRepo,
+                                   PedidoRepository pedidoRepo) {
 
         // Seleccionar un usuario activo.
         List<Usuario> usuarios = listarUsuarios(usuarioRepo);
@@ -1002,7 +1070,7 @@ public class Main {
             return;
         }
 
-        Long idUsuario = leerId(scanner, "Ingrese el ID del usuario: ");
+        Long idUsuario = leerId(scanner, "\nIngrese el ID del usuario: ");
 
         if (idUsuario == null) {
             return;
@@ -1011,7 +1079,7 @@ public class Main {
         Optional<Usuario> resultadoUsuario = usuarioRepo.buscarPorId(idUsuario);
 
         if (resultadoUsuario.isEmpty() || resultadoUsuario.get().isEliminado()) {
-            System.out.println("Error. El usuario no existe o está dado de baja.");
+            mostrarAviso("El usuario no existe o está dado de baja.");
             return;
         }
 
@@ -1022,7 +1090,8 @@ public class Main {
         System.out.println("1. TARJETA");
         System.out.println("2. TRANSFERENCIA");
         System.out.println("3. EFECTIVO");
-        System.out.print("Opción: ");
+
+        System.out.print("\nOpción: ");
 
         String opcionPago = scanner.nextLine().trim();
         FormaPago formaPago;
@@ -1038,7 +1107,7 @@ public class Main {
                 formaPago = FormaPago.EFECTIVO;
                 break;
             default:
-                System.out.println("Error. La forma de pago no es válida.");
+                mostrarAviso("La forma de pago no es válida.");
                 return;
         }
 
@@ -1052,7 +1121,7 @@ public class Main {
                 return;
             }
 
-            System.out.print("Ingrese el ID del producto (0 para finalizar): ");
+            System.out.print("\nIngrese el ID del producto (0 para finalizar): ");
             String textoId = scanner.nextLine().trim();
 
             if (textoId.equals("0")) {
@@ -1064,7 +1133,7 @@ public class Main {
             try {
                 idProducto = Long.parseLong(textoId);
             } catch (NumberFormatException e) {
-                System.out.println("Error. Ingrese un ID numérico válido.");
+                mostrarAviso("Ingrese un ID numérico válido.");
                 continue;
             }
 
@@ -1074,24 +1143,24 @@ public class Main {
                     .findFirst();
 
             if (resultadoProducto.isEmpty()) {
-                System.out.println("Error. Seleccione un producto del catálogo mostrado.");
+                mostrarAviso("Seleccione un producto del catálogo mostrado.");
                 continue;
             }
 
             Producto producto = resultadoProducto.get();
 
-            System.out.print("Ingrese la cantidad: ");
+            System.out.print("\nIngrese la cantidad: ");
             int cantidad;
 
             try {
                 cantidad = Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("Error. La cantidad debe ser un número entero.");
+                mostrarAviso("La cantidad debe ser un número entero.");
                 continue;
             }
 
             if (cantidad <= 0) {
-                System.out.println("Error. La cantidad debe ser mayor a cero.");
+                mostrarAviso("La cantidad debe ser mayor a cero.");
                 continue;
             }
 
@@ -1099,8 +1168,8 @@ public class Main {
             int stockRestante = Math.max(0, producto.getStock() - cantidadAnterior);
 
             if (cantidad > stockRestante) {
-                System.out.println(
-                        "Error: stock insuficiente. Puede agregar "
+                mostrarAviso(
+                        "Stock insuficiente. Puede agregar "
                                 + stockRestante + " unidad(es) más."
                 );
                 continue;
@@ -1121,7 +1190,7 @@ public class Main {
 
                 if (!respuesta.equalsIgnoreCase("S")
                         && !respuesta.equalsIgnoreCase("N")) {
-                    System.out.println("Error: debe ingresar S o N.");
+                    mostrarAviso("Debe ingresar S o N.");
                 }
 
             } while (!respuesta.equalsIgnoreCase("S")
@@ -1133,14 +1202,16 @@ public class Main {
         }
 
         if (items.isEmpty()) {
-            System.out.println("Error. El pedido debe contener al menos un producto.");
+            mostrarAviso("El pedido debe contener al menos un producto.");
             return;
         }
 
         // Guardar
         Pedido pedido = pedidoRepo.crearPedido(idUsuario, formaPago, items);
 
-        System.out.println("\n===== PEDIDO CREADO =====");
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("PEDIDO CREADO CORRECTAMENTE");
+        System.out.println("--------------------------------------------------");
         System.out.println("ID: " + pedido.getId());
         System.out.println("Fecha: " + pedido.getFecha());
         System.out.println(
@@ -1165,7 +1236,12 @@ public class Main {
 
     private static void cambiarEstadoPedido(Scanner scanner, PedidoRepository pedidoRepo) {
 
-        Long id = leerId(scanner, "Ingrese el ID del pedido: ");
+        List<Pedido> pedidos = listarPedidos(pedidoRepo);
+
+        if (pedidos.isEmpty()) {
+            return;
+        }
+        Long id = leerId(scanner, "\nIngrese el ID del pedido: ");
 
         if (id == null) {
             return;
@@ -1174,7 +1250,7 @@ public class Main {
         Optional<Pedido> resultado = pedidoRepo.buscarPorId(id);
 
         if (resultado.isEmpty() || resultado.get().isEliminado()) {
-            System.out.println("Error. El pedido no existe o está dado de baja.");
+            mostrarAviso("El pedido no existe o está dado de baja.");
             return;
         }
 
@@ -1192,13 +1268,20 @@ public class Main {
 
         Pedido pedidoGuardado = pedidoRepo.guardar(pedido);
 
+        System.out.println("\n--------------------------------------------------");
         System.out.println(
                 "Pedido ID: " + pedidoGuardado.getId()
-                        + " | Nuevo estado: " + pedidoGuardado.getEstado()
-        );
+                        + " | Nuevo estado: " + pedidoGuardado.getEstado());
+        System.out.println("--------------------------------------------------");
     }
+
     private static void bajaPedido(Scanner scanner, PedidoRepository pedidoRepo) {
 
+        List<Pedido> pedidos = listarPedidos(pedidoRepo);
+
+        if (pedidos.isEmpty()) {
+            return;
+        }
         Long id = leerId(scanner, "Ingrese el ID del pedido: ");
 
         if (id == null) {
@@ -1212,25 +1295,27 @@ public class Main {
         if (eliminado && resultado.isPresent()) {
             Pedido pedido = resultado.get();
 
+
+            System.out.println("\n--------------------------------------------------");
             System.out.printf(
                     Locale.US,
                     "Pedido dado de baja. ID: %d | Total: $%.2f%n",
                     pedido.getId(),
                     pedido.getTotal()
             );
+            System.out.println("--------------------------------------------------");
 
         } else {
-            System.out.println(
-                    "Error. El pedido no existe o ya está dado de baja."
-            );
+            mostrarAviso("El pedido no existe o ya está dado de baja.");
         }
     }
-    private static void listarPedidos(PedidoRepository pedidoRepo) {
+
+    private static  List<Pedido> listarPedidos(PedidoRepository pedidoRepo) {
         List<Pedido> pedidos = pedidoRepo.listarActivos();
 
         if (pedidos.isEmpty()) {
-            System.out.println("No hay pedidos activos.");
-            return;
+            mostrarAviso("No hay pedidos activos.");
+            return pedidos;
         }
 
         System.out.println("\n----- Pedidos activos -----");
@@ -1246,8 +1331,9 @@ public class Main {
                     pedido.getTotal()
             );
         }
+        System.out.println();
+        return pedidos;
     }
-
 
 
     private static List<Producto> listarProductosDisponibles(ProductoRepository productoRepo) {
@@ -1259,7 +1345,7 @@ public class Main {
                 .toList();
 
         if (productos.isEmpty()) {
-            System.out.println("No hay productos disponibles con stock.");
+            mostrarAviso("No hay productos disponibles con stock.");
             return productos;
         }
 
@@ -1271,8 +1357,6 @@ public class Main {
 
         return productos;
     }
-
-
 
 
     // ------------------------------------------------------------------
@@ -1288,7 +1372,7 @@ public class Main {
             return;
         }
 
-        Long categoriaId = leerId(scanner, "Ingrese el ID de la categoría: ");
+        Long categoriaId = leerId(scanner, "\nIngrese el ID de la categoría: ");
 
         if (categoriaId == null) {
             return;
@@ -1298,14 +1382,14 @@ public class Main {
                 categoriaRepo.buscarPorId(categoriaId);
 
         if (resultado.isEmpty()) {
-            System.out.println("Error, la categoría no existe.");
+            mostrarAviso("La categoría no existe.");
             return;
         }
 
         Categoria categoria = resultado.get();
 
         if (categoria.isEliminado()) {
-            System.out.println("Error, la categoría está dada de baja.");
+            mostrarAviso("La categoría está dada de baja.");
             return;
         }
 
@@ -1313,7 +1397,7 @@ public class Main {
                 categoriaRepo.buscarProductosPorCategoria(categoriaId);
 
         if (productos.isEmpty()) {
-            System.out.println("No hay productos activos en esta categoría.");
+            mostrarAviso("No hay productos activos en esta categoría.");
             return;
         }
 
@@ -1332,7 +1416,7 @@ public class Main {
             return;
         }
 
-        Long idUsuario = leerId(scanner, "Ingrese el ID del usuario: ");
+        Long idUsuario = leerId(scanner, "\nIngrese el ID del usuario: ");
 
         if (idUsuario == null) {
             return;
@@ -1341,7 +1425,7 @@ public class Main {
         Optional<Usuario> resultado = usuarioRepo.buscarPorId(idUsuario);
 
         if (resultado.isEmpty() || resultado.get().isEliminado()) {
-            System.out.println("Error. El usuario no existe o está dado de baja.");
+            mostrarAviso("El usuario no existe o está dado de baja.");
             return;
         }
 
@@ -1355,7 +1439,7 @@ public class Main {
         List<Pedido> pedidos = usuarioRepo.buscarPedidosPorUsuario(idUsuario);
 
         if (pedidos.isEmpty()) {
-            System.out.println("El usuario no tiene pedidos activos.");
+            mostrarAviso("El usuario no tiene pedidos activos.");
             return;
         }
 
@@ -1383,7 +1467,7 @@ public class Main {
         List<Pedido> pedidos = pedidoRepo.buscarPorEstado(estado);
 
         if (pedidos.isEmpty()) {
-            System.out.println(
+            mostrarAviso(
                     "No hay pedidos activos con estado " + estado + "."
             );
             return;
@@ -1402,6 +1486,7 @@ public class Main {
             );
         }
     }
+
     private static void reporteTotalFacturado(PedidoRepository pedidoRepo) {
 
         double total = pedidoRepo.buscarPorEstado(Estado.TERMINADO)
@@ -1415,78 +1500,78 @@ public class Main {
     }
 
 
-
-
-
     // ------------------------------------------------------------------
     // MÉTODOS AUXILIARES
     // ------------------------------------------------------------------
 
+    private static void mostrarAviso(String mensaje) {
+        System.out.println("\n--------------------------------------------------");
+        System.out.println("AVISO: " + mensaje);
+        System.out.println("--------------------------------------------------\n");
+    }
+
     // Lee un ID. Si el formato o el valor son inválidos, devuelve null.
     private static Long leerId(Scanner scanner, String mensaje) {
-        System.out.print(mensaje);
+        System.out.print("\n" + mensaje);
         String texto = scanner.nextLine().trim();
 
         try {
             Long id = Long.parseLong(texto);
 
             if (id <= 0) {
-                System.out.println("Error, el ID debe ser mayor a 0.");
+                mostrarAviso("\nEl ID debe ser mayor a 0.");
                 return null;
             }
 
             return id;
 
         } catch (NumberFormatException e) {
-            System.out.println(
-                    "Error, el ID debe ser un número entero válido."
-            );
+            mostrarAviso("El ID debe ser un número entero válido.");
             return null;
         }
     }
 
     // Lee y valida el precio para el alta de un producto.
     private static Double leerPrecio(Scanner scanner, String mensaje) {
-        System.out.print(mensaje);
+        System.out.print("\n" + mensaje);
         String texto = scanner.nextLine().trim();
 
         try {
             Double precio = Double.parseDouble(texto);
 
             if (!Double.isFinite(precio) || precio <= 0) {
-                System.out.println("Error, el precio debe ser mayor a 0.");
+                mostrarAviso("El precio debe ser mayor a 0.");
                 return null;
             }
 
             return precio;
 
         } catch (NumberFormatException e) {
-            System.out.println(
-                    "Error, debe ingresar un precio numérico usando punto para los decimales."
+            mostrarAviso(
+                    "Debe ingresar un precio numérico usando punto para los decimales."
             );
             return null;
         }
     }
 
+
     // Lee y valida el stock para el alta de un producto.
     private static Integer leerStock(Scanner scanner, String mensaje) {
-        System.out.print(mensaje);
+        System.out.print("\n" + mensaje);
         String texto = scanner.nextLine().trim();
 
         try {
             int stock = Integer.parseInt(texto);
 
             if (stock < 0) {
-                System.out.println("Error, el stock no puede ser negativo.");
+                Main.mostrarAviso("El stock no puede ser negativo.");
                 return null;
             }
 
             return stock;
 
         } catch (NumberFormatException e) {
-            System.out.println(
-                    "Error, el stock debe ser un número entero válido."
-            );
+            Main.mostrarAviso("El stock debe ser un número entero válido.");
             return null;
         }
     }
@@ -1521,7 +1606,7 @@ public class Main {
             case "4":
                 return Estado.CANCELADO;
             default:
-                System.out.println("Error: el estado seleccionado no es válido.");
+                Main.mostrarAviso("El estado seleccionado no es válido.");
                 return null;
         }
     }

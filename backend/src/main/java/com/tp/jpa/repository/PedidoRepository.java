@@ -43,7 +43,11 @@ public class PedidoRepository extends BaseRepository <Pedido> {
     public Pedido crearPedido(Long idUsuario, FormaPago formaPago, Map<Long, Integer> items){
         EntityManager em = emf.createEntityManager();
         try {
-            if(formaPago == null){
+            if (formaPago == null) {
+                throw new IllegalArgumentException("Error. Debe seleccionar una forma de pago.");
+            }
+
+            if (items == null || items.isEmpty()) {
                 throw new IllegalArgumentException("Error. El pedido debe contener al menos un producto.");
             }
 

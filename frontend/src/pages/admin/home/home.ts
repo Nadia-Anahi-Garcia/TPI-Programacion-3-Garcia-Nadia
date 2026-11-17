@@ -63,8 +63,8 @@ const cargarDashboard = async (): Promise<void> => {
       return !producto.eliminado && producto.disponible;
     });
 
-    const productosNoDisponibles = productos.filter((producto) => {
-      return !producto.eliminado && !producto.disponible;
+    const productosInactivosLista = productos.filter((producto) => {
+      return producto.eliminado;
     });
 
     totalCategorias.textContent = categoriasActivas.length.toString();
@@ -76,10 +76,10 @@ const cargarDashboard = async (): Promise<void> => {
       productosDisponiblesLista.length.toString();
 
     productosActivos.textContent =
-      productosDisponiblesLista.length.toString();
+        productosActivosLista.length.toString();
 
     productosInactivos.textContent =
-      productosNoDisponibles.length.toString();
+        productosInactivosLista.length.toString();
 
     const cantidadPorEstado = pedidos.reduce(
       (acumulador: Record<string, number>, pedido) => {

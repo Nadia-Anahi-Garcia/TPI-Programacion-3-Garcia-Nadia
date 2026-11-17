@@ -69,6 +69,13 @@ productos y pedidos.
     ```
 5. Abrir en el navegador la dirección que muestra la terminal.
 
+También se puede ejecutar con npm desde la carpeta frontend:
+
+```bash
+npm install
+npm run dev
+```
+
 ## Credenciales de prueba
 
 - Administrador: admin@admin.com — contraseña: 123456

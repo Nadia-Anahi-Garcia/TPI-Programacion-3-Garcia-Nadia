@@ -1,6 +1,12 @@
 #  TPI de Programación III — Food Store Backend
 
-**Autora** Nadia García
+**Alumna:** Nadia García
+**Docente:** Luciano Chiroli
+
+## Enlaces 
+- **Video:** [Ver video](PEGAR_ENLACE_DEL_VIDEO)
+- **Documentación del proyecto:** [Ver PDF](../Garcia_Nadia_Documentacion_TPI_Prog3.pdf)
+- **Repositorio:** [Food Store en GitHub](https://github.com/Nadia-Anahi-Garcia/TPI-Programacion-3-Garcia-Nadia)
 
 ## Descripción
 

@@ -631,7 +631,9 @@ button:hover{
   width: 100%;
   margin-top: 0.8rem;
 }
-
+#formCheckout label {
+    color: var(--color-texto-claro);
+}
 #aviso {
     font-size: 0.65rem;
     color: #1c1c1c;

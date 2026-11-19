@@ -1,8 +1,10 @@
 # Food Store - Trabajo Práctico Integrador - Programación III
 
 
-## Enlace al video. 
-
+## Enlaces. 
+- [Ver documentación en PDF](../TPI_Prog3_FoodStore_JPA_Garcia_Nadia.pdf)
+- [Ver repositorio de GitHub](https://github.com/Nadia-Anahi-Garcia/TPI-Programacion-3-Garcia-Nadia)
+- [Ver video demostrativo](https://www.youtube.com/watch?v=zbnWDSvMQb4)
 
 ## Descripción
 

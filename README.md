@@ -25,8 +25,8 @@ Cada carpeta tiene su propio README con los requisitos y los pasos para ejecutar
 
 La documentación incluye una presentación del proyecto, las tecnologías utilizadas, su organización, capturas de las pantallas principales y las dificultades que fui resolviendo durante el desarrollo.
 
-- [Ver documentación en PDF](Garcia_Nadia_Documentacion_TPI_Prog3.pdf)
-- [Ver video demostrativo](PEGAR_ENLACE_DEL_VIDEO)
+- [Documentación en PDF](./TPI_Prog3_FoodStore_JPA_Garcia_Nadia.pdf)
+- [Video demostrativo](https://www.youtube.com/watch?v=zbnWDSvMQb4)
 
 ## Repositorio
 

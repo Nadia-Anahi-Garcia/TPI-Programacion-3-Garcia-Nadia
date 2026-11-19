@@ -4,9 +4,9 @@
 **Docente:** Luciano Chiroli
 
 ## Enlaces 
-- **Video:** [Ver video](PEGAR_ENLACE_DEL_VIDEO)
-- **Documentación del proyecto:** [Ver PDF](../Garcia_Nadia_Documentacion_TPI_Prog3.pdf)
-- **Repositorio:** [Food Store en GitHub](https://github.com/Nadia-Anahi-Garcia/TPI-Programacion-3-Garcia-Nadia)
+- [Ver documentación en PDF](../TPI_Prog3_FoodStore_JPA_Garcia_Nadia.pdf)
+- [Video demostrativo](https://www.youtube.com/watch?v=zbnWDSvMQb4)
+- [Ver repositorio de Food Store](https://github.com/Nadia-Anahi-Garcia/TPI-Programacion-3-Garcia-Nadia)
 
 ## Descripción
 
